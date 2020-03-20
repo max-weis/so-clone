@@ -8,7 +8,7 @@ public class QuestionNotFoundException extends NotFoundException {
 
     private Long id;
 
-    public QuestionNotFoundException(Long id) {
+    public QuestionNotFoundException(final Long id) {
         super();
         this.id = id;
     }

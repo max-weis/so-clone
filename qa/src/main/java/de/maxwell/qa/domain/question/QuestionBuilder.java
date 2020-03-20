@@ -1,8 +1,9 @@
 package de.maxwell.qa.domain.question;
 
-import static org.apache.commons.lang3.Validate.notNull;
-
 import java.time.LocalDateTime;
+
+import static org.apache.commons.lang3.Validate.notEmpty;
+import static org.apache.commons.lang3.Validate.notNull;
 
 public class QuestionBuilder {
 
@@ -13,56 +14,58 @@ public class QuestionBuilder {
     }
 
     public QuestionBuilder withUserID(final Long userID) {
-        Long id = notNull(userID, "userId cannot be null");
-        this.question.setUserID(id);
+        notNull(userID, "userId cannot be null");
+        this.question.setUserID(userID);
         return this;
     }
 
-    public QuestionBuilder withRating(final Long value) {
-        Long rating = notNull(value, "rating cannot be null");
+    public QuestionBuilder withRating(final Long rating) {
+        notNull(rating, "rating cannot be null");
         this.question.setRating(rating);
         return this;
     }
 
     public QuestionBuilder withTitle(final String title) {
-        String t = notNull(title, "title cannot be null");
-        this.question.setTitle(t);
+        notNull(title, "title cannot be null");
+        notEmpty(title, "title cannot be empty");
+        this.question.setTitle(title);
         return this;
     }
 
     public QuestionBuilder withDescription(final String description) {
-        String desc = notNull(description, "description cannot be null");
-        this.question.setTitle(desc);
+        notNull(description, "description cannot be null");
+        notEmpty(description, "description cannot be empty");
+        this.question.setDescription(description);
         return this;
     }
 
     public QuestionBuilder withNumberOfAnswers(final Long numberOfAnswers) {
-        Long number = notNull(numberOfAnswers, "numberOfAnswers cannot be null");
-        this.question.setNumberOfAnswers(number);
+        notNull(numberOfAnswers, "numberOfAnswers cannot be null");
+        this.question.setNumberOfAnswers(numberOfAnswers);
         return this;
     }
 
     public QuestionBuilder withCorrectAnswer(final Long correctAnswer) {
-        Long correct = notNull(correctAnswer, "correctAnswer cannot be null");
-        this.question.setCorrectAnswer(correct);
+        notNull(correctAnswer, "correctAnswer cannot be null");
+        this.question.setCorrectAnswer(correctAnswer);
         return this;
     }
 
     public QuestionBuilder withViews(final Long views) {
-        Long v = notNull(views, "views cannot be null");
-        this.question.setViews(v);
+        notNull(views, "views cannot be null");
+        this.question.setViews(views);
         return this;
     }
 
     public QuestionBuilder withCreatedAt(final LocalDateTime createdAt) {
-        LocalDateTime created = notNull(createdAt, "createdAt cannot be null");
-        this.question.setCreatedAt(created);
+        notNull(createdAt, "createdAt cannot be null");
+        this.question.setCreatedAt(createdAt);
         return this;
     }
 
     public QuestionBuilder withModifiedAt(final LocalDateTime modifiedAt) {
-        LocalDateTime modified = notNull(modifiedAt, "modifiedAt cannot be null");
-        this.question.setModifiedAt(modified);
+        notNull(modifiedAt, "modifiedAt cannot be null");
+        this.question.setModifiedAt(modifiedAt);
         return this;
     }
 

@@ -1,17 +1,20 @@
 package de.maxwell.qa.domain.question;
 
+import de.maxwell.qa.infrastructure.repository.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
-
-import org.slf4j.LoggerFactory;
-
-import de.maxwell.qa.infrastructure.repository.Repository;
-
-import static org.apache.commons.lang3.Validate.notNull;
-
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.time.LocalDateTime;
-import org.slf4j.Logger;
+import java.util.List;
+
+import static org.apache.commons.lang3.Validate.notEmpty;
+import static org.apache.commons.lang3.Validate.notNull;
 
 @Repository
 public class QuestionRepository {
@@ -23,7 +26,7 @@ public class QuestionRepository {
 
     /**
      * Find the question by id
-     * 
+     *
      * @param id of the question
      * @return question
      */
@@ -41,8 +44,35 @@ public class QuestionRepository {
     }
 
     /**
+     * Find paginated questions
+     *
+     * @param limit  max number of question per page
+     * @param offset of the page
+     * @return list of questions
+     */
+    public List<Question> listAllPaginated(final Integer limit, final Integer offset) {
+        notNull(limit, "limit cannot be null");
+        notNull(offset, "offset cannot be null");
+
+        LOG.debug("Find {} question with offset {}", limit, offset);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Question> cq = cb.createQuery(Question.class);
+
+        TypedQuery<Question> query = em.createQuery(cq);
+        query.setFirstResult(offset * limit);
+        query.setMaxResults(limit);
+
+        List<Question> questions = query.getResultList();
+
+        LOG.info("Found {} questions", questions.size());
+
+        return questions;
+    }
+
+    /**
      * Create a new question
-     * 
+     *
      * @param userID      user who asked the question
      * @param title       of the question
      * @param description of the question
@@ -50,10 +80,23 @@ public class QuestionRepository {
      */
     public Question createQuestion(final Long userID, final String title, final String description) {
         try {
+            notNull(userID, "userID cannot be null");
+            notNull(title, "title cannot be null");
+            notNull(description, "description cannot be null");
+            notEmpty(title, "title cannot be empty");
+            notEmpty(description, "description cannot be empty");
+
             LocalDateTime now = LocalDateTime.now();
-            Question question = Question.newBuilder().withUserID(userID).withRating(0L).withTitle(title)
-                    .withDescription(description).withNumberOfAnswers(0L).withViews(0L).withCreatedAt(now)
-                    .withModifiedAt(now).build();
+            Question question = Question.newBuilder()
+                    .withUserID(userID)
+                    .withRating(0L)
+                    .withTitle(title)
+                    .withDescription(description)
+                    .withNumberOfAnswers(0L)
+                    .withViews(0L)
+                    .withCreatedAt(now)
+                    .withModifiedAt(now)
+                    .build();
 
             em.persist(question);
 
@@ -67,7 +110,7 @@ public class QuestionRepository {
 
     /**
      * Update the title of the question
-     * 
+     *
      * @param id       of the question
      * @param newTitle
      * @return question
@@ -75,6 +118,7 @@ public class QuestionRepository {
     public Question updateTitle(final Long id, final String newTitle) {
         notNull(id, "id cannot be null");
         notNull(newTitle, "new title cannot be null");
+        notEmpty(newTitle, "new title cannot be empty");
 
         Question question = em.find(Question.class, id);
         if (question == null) {
@@ -92,7 +136,7 @@ public class QuestionRepository {
 
     /**
      * update the description of the question
-     * 
+     *
      * @param id             of the question
      * @param newDescription
      * @return question
@@ -100,6 +144,7 @@ public class QuestionRepository {
     public Question updateDescription(final Long id, final String newDescription) {
         notNull(id, "id cannot be null");
         notNull(newDescription, "new description cannot be null");
+        notEmpty(newDescription, "new description cannot be empty");
 
         Question question = em.find(Question.class, id);
         if (question == null) {
@@ -117,7 +162,7 @@ public class QuestionRepository {
 
     /**
      * Increment the view of the question
-     * 
+     *
      * @param id of the question
      * @return new view counter
      */
@@ -141,7 +186,7 @@ public class QuestionRepository {
 
     /**
      * update the rating of the question. Rating can be negative!
-     * 
+     *
      * @param id     of the question
      * @param rating new rating of the question
      * @return new rating
@@ -171,7 +216,7 @@ public class QuestionRepository {
 
     /**
      * Set a correct answer id of the question
-     * 
+     *
      * @param id       of the question
      * @param answerID of the correct answer
      * @return new answer

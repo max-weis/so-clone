@@ -1,13 +1,7 @@
 package de.maxwell.qa.domain.question;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "TAB_QUESTION")
@@ -15,7 +9,7 @@ public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COL_QUESTION_ID", nullable = false)
+    @Column(name = "COL_ID", nullable = false)
     private Long id;
 
     @Column(name = "COL_USER_ID", nullable = false)
@@ -44,6 +38,9 @@ public class Question {
 
     @Column(name = "COL_MODIFIED", nullable = false)
     private LocalDateTime modifiedAt;
+
+    public Question() {
+    }
 
     public static QuestionBuilder newBuilder(){
         return new QuestionBuilder();
@@ -129,4 +126,19 @@ public class Question {
         this.modifiedAt = modifiedAt;
     }
 
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", userID=" + userID +
+                ", rating=" + rating +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", numberOfAnswers=" + numberOfAnswers +
+                ", correctAnswer=" + correctAnswer +
+                ", views=" + views +
+                ", createdAt=" + createdAt +
+                ", modifiedAt=" + modifiedAt +
+                '}';
+    }
 }

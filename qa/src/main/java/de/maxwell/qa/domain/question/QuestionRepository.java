@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class QuestionRepository {
     private static final Logger LOG = LoggerFactory.getLogger(QuestionRepository.class);
 
     @Inject
-    private EntityManager em;
+    EntityManager em;
 
     /**
      * Find the question by id
@@ -30,13 +32,14 @@ public class QuestionRepository {
      * @param id of the question
      * @return question
      */
-    public Question findById(final Long id) {
+    public Question findById(final Long id) throws QuestionNotFoundException {
         notNull(id, "id cannot be null");
 
-        LOG.debug("Find question with id {}", id);
+        LOG.info("Find question with id {}", id);
 
         Question question = em.find(Question.class, id);
         if (question == null) {
+            LOG.info("Found no question with id {}", id);
             throw new QuestionNotFoundException(id);
         }
 
@@ -54,10 +57,13 @@ public class QuestionRepository {
         notNull(limit, "limit cannot be null");
         notNull(offset, "offset cannot be null");
 
-        LOG.debug("Find {} question with offset {}", limit, offset);
+        LOG.info("Find {} questions with offset {}", limit, offset);
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Question> cq = cb.createQuery(Question.class);
+
+        Root<Question> root = cq.from(Question.class);
+        cq.select(root);
 
         TypedQuery<Question> query = em.createQuery(cq);
         query.setFirstResult(offset * limit);
@@ -78,7 +84,8 @@ public class QuestionRepository {
      * @param description of the question
      * @return
      */
-    public Question createQuestion(final Long userID, final String title, final String description) {
+    @Transactional
+    public Question createQuestion(final Long userID, final String title, final String description) throws IllegalArgumentException {
         try {
             notNull(userID, "userID cannot be null");
             notNull(title, "title cannot be null");
@@ -100,7 +107,7 @@ public class QuestionRepository {
 
             em.persist(question);
 
-            LOG.debug("Create question with id {}", question.getId());
+            LOG.info("Create question with id {}", question.getId());
 
             return question;
         } catch (EntityExistsException e) {
@@ -115,17 +122,19 @@ public class QuestionRepository {
      * @param newTitle
      * @return question
      */
-    public Question updateTitle(final Long id, final String newTitle) {
+    @Transactional
+    public Question updateTitle(final Long id, final String newTitle) throws QuestionNotFoundException {
         notNull(id, "id cannot be null");
         notNull(newTitle, "new title cannot be null");
         notEmpty(newTitle, "new title cannot be empty");
 
         Question question = em.find(Question.class, id);
         if (question == null) {
+            LOG.info("Found no question with id {}", id);
             throw new QuestionNotFoundException(id);
         }
 
-        LOG.debug("Update title of question with id {}", id);
+        LOG.info("Update title of question with id {}", id);
 
         question.setTitle(newTitle);
         question.setModifiedAt(LocalDateTime.now());
@@ -141,17 +150,19 @@ public class QuestionRepository {
      * @param newDescription
      * @return question
      */
-    public Question updateDescription(final Long id, final String newDescription) {
+    @Transactional
+    public Question updateDescription(final Long id, final String newDescription) throws QuestionNotFoundException {
         notNull(id, "id cannot be null");
         notNull(newDescription, "new description cannot be null");
         notEmpty(newDescription, "new description cannot be empty");
 
         Question question = em.find(Question.class, id);
         if (question == null) {
+            LOG.info("Found no question with id {}", id);
             throw new QuestionNotFoundException(id);
         }
 
-        LOG.debug("Update description of question with id {}", id);
+        LOG.info("Update description of question with id {}", id);
 
         question.setDescription(newDescription);
         question.setModifiedAt(LocalDateTime.now());
@@ -166,15 +177,17 @@ public class QuestionRepository {
      * @param id of the question
      * @return new view counter
      */
-    public Long incrementView(final Long id) {
+    @Transactional
+    public Long incrementView(final Long id) throws QuestionNotFoundException {
         notNull(id, "id cannot be null");
 
         Question question = em.find(Question.class, id);
         if (question == null) {
+            LOG.info("Found no question with id {}", id);
             throw new QuestionNotFoundException(id);
         }
 
-        LOG.debug("Increment view of question with id {}", id);
+        LOG.info("Increment view of question with id {}", id);
 
         question.setViews(question.getViews() + 1L);
         question.setModifiedAt(LocalDateTime.now());
@@ -191,27 +204,29 @@ public class QuestionRepository {
      * @param rating new rating of the question
      * @return new rating
      */
-    public Long updateRating(final Long id, final Long rating) {
+    @Transactional
+    public Long updateRating(final Long id, final Integer rating) throws QuestionNotFoundException, IllegalArgumentException {
         notNull(id, "id cannot be null");
         notNull(rating, "rating cannot be null");
 
-        if (id != 1 || id != -1) {
-            throw new IllegalAccessError("rating must be either 1 or -1");
+        if (rating == 1 || rating == -1 || rating != 0) {
+            Question question = em.find(Question.class, id);
+            if (question == null) {
+                LOG.info("Found no question with id {}", id);
+                throw new QuestionNotFoundException(id);
+            }
+
+            LOG.info("Update rating of question with id {}", id);
+
+            question.setRating(question.getRating() + rating);
+            question.setModifiedAt(LocalDateTime.now());
+
+            em.merge(question);
+
+            return question.getRating();
         }
+        throw new IllegalArgumentException("rating must be either 1 or -1");
 
-        Question question = em.find(Question.class, id);
-        if (question == null) {
-            throw new QuestionNotFoundException(id);
-        }
-
-        LOG.debug("Update rating of question with id {}", id);
-
-        question.setRating(question.getRating() + rating);
-        question.setModifiedAt(LocalDateTime.now());
-
-        em.merge(question);
-
-        return question.getRating();
     }
 
     /**
@@ -221,16 +236,18 @@ public class QuestionRepository {
      * @param answerID of the correct answer
      * @return new answer
      */
-    public Long setCorrectAnswer(final Long id, final Long answerID) {
+    @Transactional
+    public Long setCorrectAnswer(final Long id, final Long answerID) throws QuestionNotFoundException {
         notNull(id, "id cannot be null");
         notNull(answerID, "answerID cannot be null");
 
         Question question = em.find(Question.class, id);
         if (question == null) {
+            LOG.info("Found no question with id {}", id);
             throw new QuestionNotFoundException(id);
         }
 
-        LOG.debug("Update correct answer of question with id {}", id);
+        LOG.info("Update correct answer of question with id {}", id);
 
         question.setCorrectAnswer(answerID);
         question.setModifiedAt(LocalDateTime.now());
@@ -240,15 +257,22 @@ public class QuestionRepository {
         return question.getCorrectAnswer();
     }
 
-    public void removeQuestion(final Long id) {
+    /**
+     * Remove a question with the given id
+     *
+     * @param id of the question
+     */
+    @Transactional
+    public void removeQuestion(final Long id) throws QuestionNotFoundException {
         notNull(id, "id cannot be null");
 
         Question question = em.find(Question.class, id);
         if (question == null) {
+            LOG.info("Found no question with id {}", id);
             throw new QuestionNotFoundException(id);
         }
 
-        LOG.debug("Remove question with id {}", id);
+        LOG.info("Remove question with id {}", id);
 
         em.remove(question);
     }

@@ -1,4 +1,4 @@
-package main.de.maxwell.qa.question.domain;
+package main.de.maxwell.qa;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import org.slf4j.Logger;

@@ -5,7 +5,12 @@ import de.maxwell.qa.domain.question.QuestionNotFoundException;
 import de.maxwell.qa.domain.question.QuestionRepository;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,67 +59,67 @@ public class QuestionRepositoryIT {
     }
 
     @Test
-    public void testListAllPaginated(){
+    public void testListAllPaginated() {
         List<Question> questions = questionRepository.listAllPaginated(5, 0);
 
         assertThat(questions.size()).isEqualTo(5);
     }
 
     @Test
-    public void testUpdateTitle(){
+    public void testUpdateTitle() {
         Question question = questionRepository.updateTitle(2L, "new Title");
 
         assertThat(question.getTitle()).isEqualTo("new Title");
     }
 
     @Test
-    public void testUpdateTitleNotFound(){
+    public void testUpdateTitleNotFound() {
         assertThatThrownBy(() -> questionRepository.updateTitle(99L, "new Title")).isInstanceOf(QuestionNotFoundException.class)
                 .hasMessageContaining("Could not find question with id 99");
     }
 
     @Test
-    public void testUpdateDescription(){
+    public void testUpdateDescription() {
         Question question = questionRepository.updateDescription(2L, "new Description");
 
         assertThat(question.getDescription()).isEqualTo("new Description");
     }
 
     @Test
-    public void testUpdateDescriptionNotFound(){
+    public void testUpdateDescriptionNotFound() {
         assertThatThrownBy(() -> questionRepository.updateDescription(99L, "new Description")).isInstanceOf(QuestionNotFoundException.class)
                 .hasMessageContaining("Could not find question with id 99");
     }
 
     @Test
-    public void testIncrementView(){
+    public void testIncrementView() {
         Long view = questionRepository.incrementView(3L);
 
         assertThat(view).isEqualTo(1);
     }
 
     @Test
-    public void testIncrementViewNotFound(){
+    public void testIncrementViewNotFound() {
         assertThatThrownBy(() -> questionRepository.incrementView(99L)).isInstanceOf(QuestionNotFoundException.class)
                 .hasMessageContaining("Could not find question with id 99");
     }
 
     @Test
-    public void testUpdateRatingPositive(){
+    public void testUpdateRatingPositive() {
         Long rating = questionRepository.updateRating(4L, 1);
 
         assertThat(rating).isEqualTo(1L);
     }
 
     @Test
-    public void testUpdateRatingNegative(){
+    public void testUpdateRatingNegative() {
         Long rating = questionRepository.updateRating(5L, -1);
 
         assertThat(rating).isEqualTo(-1L);
     }
 
     @Test
-    public void testSetCorrectAnswer(){
+    public void testSetCorrectAnswer() {
         Long correctAnswer = questionRepository.setCorrectAnswer(6L, 1L);
 
         assertThat(correctAnswer).isEqualTo(1L);
@@ -122,7 +127,7 @@ public class QuestionRepositoryIT {
 
     @Test
     public void testSetCorrectAnswerNotFound() {
-        assertThatThrownBy(() -> questionRepository.setCorrectAnswer(99L,1L)).isInstanceOf(QuestionNotFoundException.class)
+        assertThatThrownBy(() -> questionRepository.setCorrectAnswer(99L, 1L)).isInstanceOf(QuestionNotFoundException.class)
                 .hasMessageContaining("Could not find question with id 99");
     }
 

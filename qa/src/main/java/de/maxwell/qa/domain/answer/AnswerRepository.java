@@ -83,7 +83,7 @@ public class AnswerRepository {
      * @return
      */
     @Transactional
-    public Answer createQuestion(final Long userID, final String description) throws IllegalArgumentException {
+    public Answer createAnswer(final Long userID, final String description) throws IllegalArgumentException {
         try {
             notNull(userID, "userID cannot be null");
             notNull(description, "description cannot be null");

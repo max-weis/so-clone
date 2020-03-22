@@ -18,7 +18,6 @@ public class DatabaseResource implements QuarkusTestResourceLifecycleManager {
             .withDatabaseName("postgres")
             .withUsername("postgres")
             .withPassword("postgres")
-            .withInitScript("import.sql")
             .withLogConsumer(new Slf4jLogConsumer(LOG))
             .withExposedPorts(5432);
 

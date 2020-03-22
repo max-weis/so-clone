@@ -25,12 +25,9 @@ public class QuestionBuilderTest {
         LocalDateTime now = LocalDateTime.now();
 
         Question question = builder.withUserID(0L)
-                .withRating(0L)
                 .withTitle("test")
                 .withDescription("test")
-                .withNumberOfAnswers(0L)
-                .withCorrectAnswer(0L)
-                .withViews(0L)
+                .withCorrectAnswer(1L)
                 .withCreatedAt(now)
                 .withModifiedAt(now)
                 .build();
@@ -39,7 +36,7 @@ public class QuestionBuilderTest {
         assertThat(question.getTitle()).isEqualTo("test");
         assertThat(question.getDescription()).isEqualTo("test");
         assertThat(question.getNumberOfAnswers()).isEqualTo(0L);
-        assertThat(question.getCorrectAnswer()).isEqualTo(0L);
+        assertThat(question.getCorrectAnswer()).isEqualTo(1L);
         assertThat(question.getViews()).isEqualTo(0L);
         assertThat(question.getCreatedAt()).isEqualTo(now);
         assertThat(question.getModifiedAt()).isEqualTo(now);

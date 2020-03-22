@@ -45,6 +45,14 @@ public class Question {
     private LocalDateTime modifiedAt;
 
     public Question() {
+        LocalDateTime now = LocalDateTime.now();
+
+        this.rating = 0L;
+        this.numberOfAnswers = 0L;
+        this.views = 0L;
+
+        this.createdAt = now;
+        this.modifiedAt = now;
     }
 
     public static QuestionBuilder newBuilder() {

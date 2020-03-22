@@ -93,16 +93,10 @@ public class QuestionRepository {
             notEmpty(title, "title cannot be empty");
             notEmpty(description, "description cannot be empty");
 
-            LocalDateTime now = LocalDateTime.now();
             Question question = Question.newBuilder()
                     .withUserID(userID)
-                    .withRating(0L)
                     .withTitle(title)
                     .withDescription(description)
-                    .withNumberOfAnswers(0L)
-                    .withViews(0L)
-                    .withCreatedAt(now)
-                    .withModifiedAt(now)
                     .build();
 
             em.persist(question);
@@ -226,7 +220,6 @@ public class QuestionRepository {
             return question.getRating();
         }
         throw new IllegalArgumentException("rating must be either 1 or -1");
-
     }
 
     /**

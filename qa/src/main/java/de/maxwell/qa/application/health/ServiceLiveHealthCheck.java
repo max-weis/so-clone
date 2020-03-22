@@ -13,7 +13,10 @@ public class ServiceLiveHealthCheck implements HealthCheck {
     @Override
     public HealthCheckResponse call() {
 
-        return HealthCheckResponse.named(ServiceLiveHealthCheck.class.getSimpleName()).withData("live",true).up().build();
+        return HealthCheckResponse.named(ServiceLiveHealthCheck.class.getSimpleName())
+                .withData("live", true)
+                .up()
+                .build();
 
     }
 }

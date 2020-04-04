@@ -133,7 +133,7 @@ public class AnswerRepository {
     }
 
     /**
-     * update the rating of the answer. Rating can be negative!
+     * update the rating of the answer. Ratings can be negative!
      *
      * @param id     of the answer
      * @param rating new rating of the answer
@@ -197,7 +197,7 @@ public class AnswerRepository {
      * @param id of the answer
      */
     @Transactional
-    public void removeQuestion(final Long id) throws AnswerNotFoundException {
+    public void removeAnswer(final Long id) throws AnswerNotFoundException {
         notNull(id, "id cannot be null");
 
         Answer answer = em.find(Answer.class, id);

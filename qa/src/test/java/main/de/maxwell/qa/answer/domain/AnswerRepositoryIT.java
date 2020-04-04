@@ -105,14 +105,14 @@ public class AnswerRepositoryIT {
     @Test
     @Order(1)
     public void testDelete() {
-        answerRepository.removeQuestion(7L);
+        answerRepository.removeAnswer(7L);
         assertThatThrownBy(() -> answerRepository.findById(7L)).isInstanceOf(AnswerNotFoundException.class)
                 .hasMessageContaining("Could not find answer with id 7");
     }
 
     @Test
     public void testDeleteNotFound() {
-        assertThatThrownBy(() -> answerRepository.removeQuestion(99L)).isInstanceOf(AnswerNotFoundException.class)
+        assertThatThrownBy(() -> answerRepository.removeAnswer(99L)).isInstanceOf(AnswerNotFoundException.class)
                 .hasMessageContaining("Could not find answer with id 99");
     }
 }

@@ -2,7 +2,7 @@ package de.maxwell.qa.domain.answer;
 
 import javax.ws.rs.NotFoundException;
 
-public class AnswerNotFoundException  extends NotFoundException {
+public class AnswerNotFoundException extends NotFoundException {
     private static final long serialVersionUID = 1L;
 
     private Long id;

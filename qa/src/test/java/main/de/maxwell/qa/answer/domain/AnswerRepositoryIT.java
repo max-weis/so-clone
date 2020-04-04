@@ -33,13 +33,13 @@ public class AnswerRepositoryIT {
 
     @BeforeAll
     public void setUp() {
-        answerRepository.createAnswer(1L,"test1");
-        answerRepository.createAnswer(2L,"test2");
-        answerRepository.createAnswer(3L,"test3");
-        answerRepository.createAnswer(4L,"test4");
-        answerRepository.createAnswer(5L,"test5");
-        answerRepository.createAnswer(6L,"test6");
-        answerRepository.createAnswer(7L,"test7");
+        answerRepository.createAnswer(1L, "test1");
+        answerRepository.createAnswer(2L, "test2");
+        answerRepository.createAnswer(3L, "test3");
+        answerRepository.createAnswer(4L, "test4");
+        answerRepository.createAnswer(5L, "test5");
+        answerRepository.createAnswer(6L, "test6");
+        answerRepository.createAnswer(7L, "test7");
     }
 
     @Test
@@ -62,6 +62,7 @@ public class AnswerRepositoryIT {
 
         assertThat(answers.size()).isEqualTo(5);
     }
+
     @Test
     public void testUpdateDescription() {
         Answer answers = answerRepository.updateDescription(2L, "new Description");
@@ -90,7 +91,7 @@ public class AnswerRepositoryIT {
     }
 
     @Test
-    public void testSetCorrectAnswer(){
+    public void testSetCorrectAnswer() {
         Boolean answer = answerRepository.setCorrectAnswer(6L, true);
 
         assertThat(answer).isTrue();
@@ -98,7 +99,7 @@ public class AnswerRepositoryIT {
 
     @Test
     public void testSetCorrectAnswerNotFound() {
-        assertThatThrownBy(() -> answerRepository.setCorrectAnswer(99L,false)).isInstanceOf(AnswerNotFoundException.class)
+        assertThatThrownBy(() -> answerRepository.setCorrectAnswer(99L, false)).isInstanceOf(AnswerNotFoundException.class)
                 .hasMessageContaining("Could not find answer with id 99");
     }
 

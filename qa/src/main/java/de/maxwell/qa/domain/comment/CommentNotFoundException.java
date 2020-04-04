@@ -2,7 +2,7 @@ package de.maxwell.qa.domain.comment;
 
 import javax.ws.rs.NotFoundException;
 
-public class CommentNotFoundException  extends NotFoundException {
+public class CommentNotFoundException extends NotFoundException {
     private static final long serialVersionUID = 1L;
 
     private Long id;

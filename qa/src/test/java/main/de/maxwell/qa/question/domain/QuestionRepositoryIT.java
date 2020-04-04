@@ -129,6 +129,20 @@ public class QuestionRepositoryIT {
     }
 
     @Test
+    public void testCountNumberOfAnswersOfUser(){
+        Long count = questionRepository.countNumberOfQuestionsOfUser(1L);
+
+        assertThat(count).isEqualTo(6L);
+    }
+
+    @Test
+    public void testCountNumberOfAnswersOfUserIsZero(){
+        Long count = questionRepository.countNumberOfQuestionsOfUser(99L);
+
+        assertThat(count).isEqualTo(0L);
+    }
+
+    @Test
     @Order(1)
     public void testDelete() {
         questionRepository.removeQuestion(7L);

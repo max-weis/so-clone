@@ -1,5 +1,6 @@
 package de.maxwell.qa.domain.profile;
 
+import de.maxwell.qa.infrastructure.repository.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
+@Repository
 public class ProfileRepository {
     private static final Logger LOG = LoggerFactory.getLogger(ProfileRepository.class);
 
@@ -77,15 +79,19 @@ public class ProfileRepository {
      * Create a new profile
      *
      * @param userID user who created the profile
+     * @param firstName
      * @return
      */
     @Transactional
-    public Profile createProfile(final Long userID) throws IllegalArgumentException {
+    public Profile createProfile(final Long userID, String firstName) throws IllegalArgumentException {
         try {
             notNull(userID, "userID cannot be null");
+            notNull(firstName, "firstName cannot be null");
+            notEmpty(firstName, "firstName cannot be empty");
 
             Profile profile = Profile.newBuilder()
                     .withUserID(userID)
+                    .withFirstName(firstName)
                     .build();
 
             em.persist(profile);
@@ -189,6 +195,7 @@ public class ProfileRepository {
      * @param image new image of the profile
      * @return new reputation
      */
+    @Transactional
     public void updateImage(final Long id, final Byte[] image) throws ProfileNotFoundException {
         notNull(id, "id cannot be null");
         notNull(image, "new image cannot be null");

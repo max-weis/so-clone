@@ -65,9 +65,9 @@ public class AnswerRepositoryIT {
 
     @Test
     public void testUpdateDescription() {
-        Answer answers = answerRepository.updateDescription(2L, "new Description");
+        Answer answer = answerRepository.updateDescription(2L, "new Description");
 
-        assertThat(answers.getDescription()).isEqualTo("new Description");
+        assertThat(answer.getDescription()).isEqualTo("new Description");
     }
 
     @Test

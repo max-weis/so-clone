@@ -109,7 +109,7 @@ public class AnswerRepository {
      *
      * @param id             of the answer
      * @param newDescription
-     * @return question
+     * @return answer
      */
     @Transactional
     public Answer updateDescription(final Long id, final String newDescription) throws AnswerNotFoundException {

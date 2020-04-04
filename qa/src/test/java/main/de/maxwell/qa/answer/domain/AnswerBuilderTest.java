@@ -26,12 +26,14 @@ public class AnswerBuilderTest {
 
         Answer answer = builder
                 .withUserID(0L)
+                .withQuestionID(0L)
                 .withDescription("test")
                 .withModifiedAt(now)
                 .withCreatedAt(now)
                 .build();
 
         assertThat(answer.getUserID()).isEqualTo(0L);
+        assertThat(answer.getQuestionID()).isEqualTo(0L);
         assertThat(answer.getDescription()).isEqualTo("test");
         assertThat(answer.getRating()).isEqualTo(0L);
         assertThat(answer.getCorrectAnswer()).isEqualTo(false);
@@ -42,6 +44,12 @@ public class AnswerBuilderTest {
     @Test
     public void testBuildShouldFailForNullUserID() {
         assertThatNullPointerException().isThrownBy(() -> builder.withUserID(null)
+                .build());
+    }
+
+    @Test
+    public void testBuildShouldFailForNullQuestionID() {
+        assertThatNullPointerException().isThrownBy(() -> builder.withQuestionID(null)
                 .build());
     }
 

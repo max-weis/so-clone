@@ -20,6 +20,9 @@ public class Answer {
     @Column(name = "COL_USER_ID", nullable = false)
     private Long userID;
 
+    @Column(name = "COL_QUESTION_ID", nullable = false)
+    private Long questionID;
+
     @Column(name = "COL_DESCRIPTION", nullable = false)
     private String description;
 
@@ -55,6 +58,14 @@ public class Answer {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(Long questionID) {
+        this.questionID = questionID;
     }
 
     public Long getUserID() {

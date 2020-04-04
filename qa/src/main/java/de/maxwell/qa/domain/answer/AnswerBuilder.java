@@ -19,6 +19,12 @@ public class AnswerBuilder {
         return this;
     }
 
+    public AnswerBuilder withQuestionID(final Long questionID) {
+        notNull(questionID, "questionID cannot be null");
+        this.answer.setQuestionID(questionID);
+        return this;
+    }
+
     public AnswerBuilder withRating(final Long rating) {
         notNull(rating, "rating cannot be null");
         this.answer.setRating(rating);

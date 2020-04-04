@@ -33,13 +33,13 @@ public class AnswerRepositoryIT {
 
     @BeforeAll
     public void setUp() {
-        answerRepository.createAnswer(1L, "test1");
-        answerRepository.createAnswer(2L, "test2");
-        answerRepository.createAnswer(3L, "test3");
-        answerRepository.createAnswer(4L, "test4");
-        answerRepository.createAnswer(5L, "test5");
-        answerRepository.createAnswer(6L, "test6");
-        answerRepository.createAnswer(7L, "test7");
+        answerRepository.createAnswer(1L, 1L,"test1");
+        answerRepository.createAnswer(2L, 1L,"test2");
+        answerRepository.createAnswer(3L, 1L,"test3");
+        answerRepository.createAnswer(4L, 2L,"test4");
+        answerRepository.createAnswer(5L, 2L,"test5");
+        answerRepository.createAnswer(6L, 2L,"test6");
+        answerRepository.createAnswer(7L, 3L,"test7");
     }
 
     @Test
@@ -47,6 +47,7 @@ public class AnswerRepositoryIT {
         Answer answer = answerRepository.findById(1L);
 
         assertThat(answer.getUserID()).isEqualTo(1L);
+        assertThat(answer.getQuestionID()).isEqualTo(1L);
         assertThat(answer.getDescription()).isEqualTo("test1");
     }
 
@@ -101,6 +102,34 @@ public class AnswerRepositoryIT {
     public void testSetCorrectAnswerNotFound() {
         assertThatThrownBy(() -> answerRepository.setCorrectAnswer(99L, false)).isInstanceOf(AnswerNotFoundException.class)
                 .hasMessageContaining("Could not find answer with id 99");
+    }
+
+    @Test
+    public void testCountNumberOfAnswersOfUser(){
+        Long count = answerRepository.countNumberOfAnswersOfUser(1L);
+
+        assertThat(count).isEqualTo(1L);
+    }
+
+    @Test
+    public void testCountNumberOfAnswersOfUserIsZero(){
+        Long count = answerRepository.countNumberOfAnswersOfUser(99L);
+
+        assertThat(count).isEqualTo(0L);
+    }
+
+    @Test
+    public void testCountNumberOfAnswersOfQuestion(){
+        Long count = answerRepository.countNumberOfAnswersOfQuestion(1L);
+
+        assertThat(count).isEqualTo(3L);
+    }
+
+    @Test
+    public void testCountNumberOfAnswersOfQuestionIsZero(){
+        Long count = answerRepository.countNumberOfAnswersOfQuestion(99L);
+
+        assertThat(count).isEqualTo(0L);
     }
 
     @Test

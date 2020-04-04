@@ -83,14 +83,16 @@ public class AnswerRepository {
      * @return
      */
     @Transactional
-    public Answer createAnswer(final Long userID, final String description) throws IllegalArgumentException {
+    public Answer createAnswer(final Long userID, final Long questionID,final String description) throws IllegalArgumentException {
         try {
             notNull(userID, "userID cannot be null");
+            notNull(questionID, "questionID cannot be null");
             notNull(description, "description cannot be null");
             notEmpty(description, "description cannot be empty");
 
             Answer answer = Answer.newBuilder()
                     .withUserID(userID)
+                    .withQuestionID(questionID)
                     .withDescription(description)
                     .build();
 
@@ -189,6 +191,54 @@ public class AnswerRepository {
         em.merge(answer);
 
         return answer.getCorrectAnswer();
+    }
+
+    /**
+     * Counts the number of answers belonging to the given user
+     *
+     * @param userID given user
+     * @return number of answers
+     */
+    public Long countNumberOfAnswersOfUser(final Long userID) {
+        LOG.info("Find answers of user: {}", userID);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+        Root<Answer> root = cq.from(Answer.class);
+        cq.select(cb.count(root));
+        cq.where(cb.equal(root.get("userID"), userID));
+
+        Long count = em.createQuery(cq)
+                .getSingleResult();
+
+        LOG.info("Found {} answers of user with id: {}", count, userID);
+
+        return count;
+    }
+
+    /**
+     * Counts the number of answers belonging to the given question
+     *
+     * @param questionID given question
+     * @return number of answers
+     */
+    public Long countNumberOfAnswersOfQuestion(final Long questionID) {
+        LOG.info("Find answers of question: {}", questionID);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+        Root<Answer> root = cq.from(Answer.class);
+        cq.select(cb.count(root));
+        cq.where(cb.equal(root.get("questionID"), questionID));
+
+        Long count = em.createQuery(cq)
+                .getSingleResult();
+
+        LOG.info("Found {} answers of question with id: {}", count, questionID);
+
+        return count;
     }
 
     /**

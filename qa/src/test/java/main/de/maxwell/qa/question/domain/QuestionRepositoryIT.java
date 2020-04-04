@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -27,8 +25,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class QuestionRepositoryIT {
-
-    private static final Logger LOG = LoggerFactory.getLogger(QuestionRepositoryIT.class);
 
     @Inject
     QuestionRepository questionRepository;

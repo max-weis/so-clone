@@ -251,6 +251,30 @@ public class QuestionRepository {
     }
 
     /**
+     * Counts the number of questions belonging to the given user
+     *
+     * @param userID given user
+     * @return number of questions
+     */
+    public Long countNumberOfQuestionsOfUser(final Long userID) {
+        LOG.info("Find questions of user: {}", userID);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+        Root<Question> root = cq.from(Question.class);
+        cq.select(cb.count(root));
+        cq.where(cb.equal(root.get("userID"), userID));
+
+        Long count = em.createQuery(cq)
+                .getSingleResult();
+
+        LOG.info("Found {} questions of user with id: {}", count, userID);
+
+        return count;
+    }
+
+    /**
      * Remove a question with the given id
      *
      * @param id of the question

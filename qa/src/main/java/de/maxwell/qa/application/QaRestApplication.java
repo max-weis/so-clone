@@ -1,4 +1,4 @@
-package de.maxwell.qa;
+package de.maxwell.qa.application;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

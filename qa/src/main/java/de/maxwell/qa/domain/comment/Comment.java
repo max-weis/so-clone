@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+//TODO: add question and answer id
 @Entity
 @Table(name = "TAB_COMMENT")
 public class Comment {

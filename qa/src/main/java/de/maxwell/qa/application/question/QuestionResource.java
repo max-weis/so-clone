@@ -3,7 +3,7 @@ package de.maxwell.qa.application.question;
 import de.maxwell.qa.domain.question.Question;
 import de.maxwell.qa.domain.question.QuestionNotFoundException;
 import de.maxwell.qa.domain.question.QuestionRepository;
-import io.quarkus.security.identity.SecurityIdentity;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,10 +25,10 @@ public class QuestionResource {
     private static final Logger LOG = LoggerFactory.getLogger(QuestionResource.class);
 
     @Inject
-    SecurityIdentity identity;
+    QuestionRepository repository;
 
     @Inject
-    QuestionRepository repository;
+    JsonWebToken jwt;
 
     @GET
     @Path("/{id}")
@@ -47,17 +47,21 @@ public class QuestionResource {
     }
 
     @POST
-    public Response createQuestion(final BaseQuestionDTO baseQuestion) {
+    public Response createQuestion(final QuestionNewDTO baseQuestion) {
         try {
-            LOG.info(identity.getAttributes()
-                    .toString());
+            String sub = jwt.getSubject();
 
+            if (!sub.equals(baseQuestion.getUserID())) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .build();
+            }
             Question question = repository.createQuestion(baseQuestion.getUserID(), baseQuestion.getTitle(), baseQuestion.getDescription());
 
             return Response.ok()
                     .entity(question)
                     .build();
         } catch (Exception e) {
+            LOG.info(e.getMessage(), e);
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         }

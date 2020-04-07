@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CommentNotFoundExceptionTest  {
+public class CommentNotFoundExceptionTest {
     @Test
     public void testException() {
         CommentNotFoundException exception = new CommentNotFoundException(1L);

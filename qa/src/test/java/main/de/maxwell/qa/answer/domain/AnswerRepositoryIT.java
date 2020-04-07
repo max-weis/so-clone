@@ -33,13 +33,13 @@ public class AnswerRepositoryIT {
 
     @BeforeAll
     public void setUp() {
-        answerRepository.createAnswer("1", 1L,"test1");
-        answerRepository.createAnswer("2", 1L,"test2");
-        answerRepository.createAnswer("3", 1L,"test3");
-        answerRepository.createAnswer("4", 2L,"test4");
-        answerRepository.createAnswer("5", 2L,"test5");
-        answerRepository.createAnswer("6", 2L,"test6");
-        answerRepository.createAnswer("7", 3L,"test7");
+        answerRepository.createAnswer("1", 1L, "test1");
+        answerRepository.createAnswer("2", 1L, "test2");
+        answerRepository.createAnswer("3", 1L, "test3");
+        answerRepository.createAnswer("4", 2L, "test4");
+        answerRepository.createAnswer("5", 2L, "test5");
+        answerRepository.createAnswer("6", 2L, "test6");
+        answerRepository.createAnswer("7", 3L, "test7");
     }
 
     @Test
@@ -105,28 +105,28 @@ public class AnswerRepositoryIT {
     }
 
     @Test
-    public void testCountNumberOfAnswersOfUser(){
+    public void testCountNumberOfAnswersOfUser() {
         Long count = answerRepository.countNumberOfAnswersOfUser("1");
 
         assertThat(count).isEqualTo(1L);
     }
 
     @Test
-    public void testCountNumberOfAnswersOfUserIsZero(){
+    public void testCountNumberOfAnswersOfUserIsZero() {
         Long count = answerRepository.countNumberOfAnswersOfUser("99");
 
         assertThat(count).isEqualTo(0L);
     }
 
     @Test
-    public void testCountNumberOfAnswersOfQuestion(){
+    public void testCountNumberOfAnswersOfQuestion() {
         Long count = answerRepository.countNumberOfAnswersOfQuestion(1L);
 
         assertThat(count).isEqualTo(3L);
     }
 
     @Test
-    public void testCountNumberOfAnswersOfQuestionIsZero(){
+    public void testCountNumberOfAnswersOfQuestionIsZero() {
         Long count = answerRepository.countNumberOfAnswersOfQuestion(99L);
 
         assertThat(count).isEqualTo(0L);

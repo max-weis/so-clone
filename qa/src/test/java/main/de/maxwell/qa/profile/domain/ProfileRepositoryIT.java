@@ -126,7 +126,7 @@ public class ProfileRepositoryIT {
 
     @Test
     public void testUpdateReputationNotFound() {
-        assertThatThrownBy(() -> profileRepository.updateReputation(99L,1)).isInstanceOf(ProfileNotFoundException.class)
+        assertThatThrownBy(() -> profileRepository.updateReputation(99L, 1)).isInstanceOf(ProfileNotFoundException.class)
                 .hasMessageContaining("Could not find profile with id 99");
     }
 

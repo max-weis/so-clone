@@ -11,4 +11,5 @@ public class ProfileNotFoundExceptionTest {
         ProfileNotFoundException exception = new ProfileNotFoundException(1L);
 
         assertThat(exception.getMessage()).isEqualTo("Could not find profile with id 1");
-    }}
+    }
+}

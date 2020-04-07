@@ -61,6 +61,7 @@ public class CommentBuilderTest {
         assertThatNullPointerException().isThrownBy(() -> builder.withDescription(null)
                 .build());
     }
+
     @Test
     public void testBuildShouldFailForNullCreatedAt() {
         assertThatNullPointerException().isThrownBy(() -> builder.withCreatedAt(null)

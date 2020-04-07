@@ -78,7 +78,7 @@ public class ProfileRepository {
     /**
      * Create a new profile
      *
-     * @param userID user who created the profile
+     * @param userID    user who created the profile
      * @param firstName
      * @return
      */

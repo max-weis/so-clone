@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.validation.constraints.Size;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -139,13 +140,51 @@ public class QuestionResource {
         }
     }
 
-    @GET
-    @Path("/{id}/increment")
+    @PUT
+    @Path("/{id}/view")
     public Response incrementView(@PathParam("id") final Long questionId) {
         try {
             Long view = repository.incrementView(questionId);
 
             LOG.info("Increment view of the question id {}", questionId);
+
+            return Response.ok()
+                    .entity(view)
+                    .build();
+        } catch (QuestionNotFoundException q) {
+            LOG.info("Could not find question with ID: {}", questionId);
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+    }
+
+    @PUT
+    @Path("/{id}/rating")
+    public Response upvoteRating(@PathParam("id") final Long questionId) {
+        try {
+            Long view = repository.updateRating(questionId,1);
+
+            LOG.info("Increment rating of the question id {}", questionId);
+
+            return Response.ok()
+                    .entity(view)
+                    .build();
+        } catch (QuestionNotFoundException q) {
+            LOG.info("Could not find question with ID: {}", questionId);
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}/rating")
+    public Response downvoteRating(@PathParam("id") final Long questionId) {
+        try {
+            Long view = repository.updateRating(questionId,-1);
+
+            LOG.info("Decrement rating of the question id {}", questionId);
 
             return Response.ok()
                     .entity(view)

@@ -1,5 +1,8 @@
 package de.maxwell.qa.application.question;
 
+import de.maxwell.qa.domain.answer.Answer;
+import de.maxwell.qa.domain.answer.AnswerNotFoundException;
+import de.maxwell.qa.domain.answer.AnswerRepository;
 import de.maxwell.qa.domain.question.Question;
 import de.maxwell.qa.domain.question.QuestionNotFoundException;
 import de.maxwell.qa.domain.question.QuestionRepository;
@@ -30,7 +33,10 @@ public class QuestionResource {
     private static final Logger LOG = LoggerFactory.getLogger(QuestionResource.class);
 
     @Inject
-    QuestionRepository repository;
+    QuestionRepository questionRepository;
+
+    @Inject
+    AnswerRepository answerRepository;
 
     @Inject
     JsonWebToken jwt;
@@ -41,7 +47,7 @@ public class QuestionResource {
         try {
             LOG.info("Find question with ID: {}", questionId);
 
-            Question question = repository.findById(questionId);
+            Question question = questionRepository.findById(questionId);
 
             return Response.ok()
                     .entity(question)
@@ -64,7 +70,7 @@ public class QuestionResource {
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .build();
             }
-            Question question = repository.createQuestion(baseQuestion.getUserID(), baseQuestion.getTitle(), baseQuestion.getDescription());
+            Question question = questionRepository.createQuestion(baseQuestion.getUserID(), baseQuestion.getTitle(), baseQuestion.getDescription());
 
             LOG.info("New question with ID: {} created", question.getId());
 
@@ -80,7 +86,7 @@ public class QuestionResource {
 
     @GET
     public Response getQuestionsPaginated(@Size(min = 0, max = 50) @QueryParam("limit") final Integer limit, @Size(min = 0) @QueryParam("offset") final Integer offset) {
-        List<Question> questions = repository.listAllPaginated(limit, offset);
+        List<Question> questions = questionRepository.listAllPaginated(limit, offset);
         LOG.info("Found {} questions", limit * offset);
 
         return Response.ok()
@@ -92,7 +98,7 @@ public class QuestionResource {
     public Response updateTitle(final QuestionUpdateTitleDTO newQuestion) {
         try {
             LOG.info("Update title of the question id {}", newQuestion.getId());
-            Question question = repository.findById(newQuestion.getId());
+            Question question = questionRepository.findById(newQuestion.getId());
 
             String sub = jwt.getSubject();
 
@@ -101,7 +107,7 @@ public class QuestionResource {
                         .build();
             }
 
-            Question updatedQuestion = repository.updateTitle(newQuestion.getId(), newQuestion.getTitle());
+            Question updatedQuestion = questionRepository.updateTitle(newQuestion.getId(), newQuestion.getTitle());
 
             return Response.ok()
                     .entity(updatedQuestion)
@@ -118,7 +124,7 @@ public class QuestionResource {
     public Response updateDescription(final QuestionUpdateDescriptionDTO newQuestion) {
         try {
             LOG.info("Update description of the question id {}", newQuestion.getId());
-            Question question = repository.findById(newQuestion.getId());
+            Question question = questionRepository.findById(newQuestion.getId());
 
             String sub = jwt.getSubject();
 
@@ -127,7 +133,7 @@ public class QuestionResource {
                         .build();
             }
 
-            Question updatedQuestion = repository.updateDescription(newQuestion.getId(), newQuestion.getDescription());
+            Question updatedQuestion = questionRepository.updateDescription(newQuestion.getId(), newQuestion.getDescription());
 
             return Response.ok()
                     .entity(updatedQuestion)
@@ -144,12 +150,11 @@ public class QuestionResource {
     @Path("/{id}/view")
     public Response incrementView(@PathParam("id") final Long questionId) {
         try {
-            Long view = repository.incrementView(questionId);
+            Long view = questionRepository.incrementView(questionId);
 
             LOG.info("Increment view of the question id {}", questionId);
 
             return Response.ok()
-                    .entity(view)
                     .build();
         } catch (QuestionNotFoundException q) {
             LOG.info("Could not find question with ID: {}", questionId);
@@ -163,7 +168,7 @@ public class QuestionResource {
     @Path("/{id}/rating")
     public Response upvoteRating(@PathParam("id") final Long questionId) {
         try {
-            Long view = repository.updateRating(questionId,1);
+            Long view = questionRepository.updateRating(questionId, 1);
 
             LOG.info("Increment rating of the question id {}", questionId);
 
@@ -182,7 +187,7 @@ public class QuestionResource {
     @Path("/{id}/rating")
     public Response downvoteRating(@PathParam("id") final Long questionId) {
         try {
-            Long view = repository.updateRating(questionId,-1);
+            Long view = questionRepository.updateRating(questionId, -1);
 
             LOG.info("Decrement rating of the question id {}", questionId);
 
@@ -193,6 +198,71 @@ public class QuestionResource {
             LOG.info("Could not find question with ID: {}", questionId);
             return Response
                     .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/answer/{answerId}")
+    public Response setCorrectAnswer(@PathParam("id") final Long questionId, @PathParam("answerId") final Long answerId) {
+        try {
+            LOG.info("Set correct answer of ID: {} for the question with ID: {}", questionId, answerId);
+            Answer answer = answerRepository.findById(answerId);
+
+            Long correctAnswer = questionRepository.setCorrectAnswer(questionId, answer.getId());
+
+            return Response.ok()
+                    .entity(correctAnswer)
+                    .build();
+        } catch (QuestionNotFoundException q) {
+            LOG.info("Could not find question with ID: {}", questionId);
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        } catch (AnswerNotFoundException q) {
+            LOG.info("Could not find answer with ID: {}", answerId);
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("/count")
+    public Response getCount(@QueryParam("id") final String userID) {
+        LOG.info("Count number of question from user with ID: {}", userID);
+
+        Long count = questionRepository.countNumberOfQuestionsOfUser(userID);
+
+        LOG.info("user with ID: {} has {} questions", userID, count);
+
+        return Response.ok()
+                .entity(count)
+                .build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteQuestion(@PathParam("id") final Long questionId) {
+        try {
+            String sub = jwt.getSubject();
+
+            Question question = questionRepository.findById(questionId);
+
+            if (!sub.equals(question.getUserID())) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .build();
+            }
+
+            LOG.info("Delete question with ID: {}", questionId);
+
+            questionRepository.removeQuestion(questionId);
+
+            return Response.ok()
+                    .build();
+        } catch (QuestionNotFoundException q) {
+            LOG.info("Could not find question with ID: {}", questionId);
+            return Response.status(Response.Status.NOT_FOUND)
                     .build();
         }
     }

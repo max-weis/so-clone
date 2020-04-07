@@ -129,14 +129,14 @@ public class QuestionRepositoryIT {
     }
 
     @Test
-    public void testCountNumberOfAnswersOfUser(){
+    public void testCountNumberOfAnswersOfUser() {
         Long count = questionRepository.countNumberOfQuestionsOfUser("1");
 
         assertThat(count).isEqualTo(6L);
     }
 
     @Test
-    public void testCountNumberOfAnswersOfUserIsZero(){
+    public void testCountNumberOfAnswersOfUserIsZero() {
         Long count = questionRepository.countNumberOfQuestionsOfUser("99");
 
         assertThat(count).isEqualTo(0L);

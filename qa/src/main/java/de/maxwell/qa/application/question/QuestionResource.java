@@ -47,7 +47,6 @@ public class QuestionResource {
                     .build();
         } catch (QuestionNotFoundException q) {
             LOG.info("Could not find question with ID: {}", questionId);
-
             return Response.status(Response.Status.NOT_FOUND)
                     .build();
         }
@@ -90,39 +89,72 @@ public class QuestionResource {
 
     @PUT
     public Response updateTitle(final QuestionUpdateTitleDTO newQuestion) {
-        LOG.info("Update title of the question id {}", newQuestion.getId());
-        Question question = repository.findById(newQuestion.getId());
+        try {
+            LOG.info("Update title of the question id {}", newQuestion.getId());
+            Question question = repository.findById(newQuestion.getId());
 
-        String sub = jwt.getSubject();
+            String sub = jwt.getSubject();
 
-        if (!sub.equals(question.getUserID())) {
-            return Response.status(Response.Status.UNAUTHORIZED)
+            if (!sub.equals(question.getUserID())) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .build();
+            }
+
+            Question updatedQuestion = repository.updateTitle(newQuestion.getId(), newQuestion.getTitle());
+
+            return Response.ok()
+                    .entity(updatedQuestion)
+                    .build();
+        } catch (QuestionNotFoundException q) {
+            LOG.info("Could not find question with ID: {}", newQuestion.getId());
+            return Response
+                    .status(Response.Status.NOT_FOUND)
                     .build();
         }
-
-        Question updatedQuestion = repository.updateTitle(newQuestion.getId(), newQuestion.getTitle());
-
-        return Response.ok()
-                .entity(updatedQuestion)
-                .build();
     }
 
     @PUT
     public Response updateDescription(final QuestionUpdateDescriptionDTO newQuestion) {
-        LOG.info("Update description of the question id {}", newQuestion.getId());
-        Question question = repository.findById(newQuestion.getId());
+        try {
+            LOG.info("Update description of the question id {}", newQuestion.getId());
+            Question question = repository.findById(newQuestion.getId());
 
-        String sub = jwt.getSubject();
+            String sub = jwt.getSubject();
 
-        if (!sub.equals(question.getUserID())) {
-            return Response.status(Response.Status.UNAUTHORIZED)
+            if (!sub.equals(question.getUserID())) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .build();
+            }
+
+            Question updatedQuestion = repository.updateDescription(newQuestion.getId(), newQuestion.getDescription());
+
+            return Response.ok()
+                    .entity(updatedQuestion)
+                    .build();
+        } catch (QuestionNotFoundException q) {
+            LOG.info("Could not find question with ID: {}", newQuestion.getId());
+            return Response
+                    .status(Response.Status.NOT_FOUND)
                     .build();
         }
+    }
 
-        Question updatedQuestion = repository.updateDescription(newQuestion.getId(), newQuestion.getDescription());
+    @GET
+    @Path("/{id}/increment")
+    public Response incrementView(@PathParam("id") final Long questionId) {
+        try {
+            Long view = repository.incrementView(questionId);
 
-        return Response.ok()
-                .entity(updatedQuestion)
-                .build();
+            LOG.info("Increment view of the question id {}", questionId);
+
+            return Response.ok()
+                    .entity(view)
+                    .build();
+        } catch (QuestionNotFoundException q) {
+            LOG.info("Could not find question with ID: {}", questionId);
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
     }
 }

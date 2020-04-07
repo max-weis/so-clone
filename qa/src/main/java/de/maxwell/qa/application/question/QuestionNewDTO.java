@@ -1,23 +1,26 @@
 package de.maxwell.qa.application.question;
 
-public class BaseQuestionDTO {
-    private Long userID;
+public class QuestionNewDTO {
+    private String userID;
 
     private String title;
 
     private String description;
 
-    public BaseQuestionDTO(final Long userID, final String title, final String description) {
+    public QuestionNewDTO() {
+    }
+
+    public QuestionNewDTO(final String userID, final String title, final String description) {
         this.userID = userID;
         this.title = title;
         this.description = description;
     }
 
-    public Long getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(final Long userID) {
+    public void setUserID(final String userID) {
         this.userID = userID;
     }
 

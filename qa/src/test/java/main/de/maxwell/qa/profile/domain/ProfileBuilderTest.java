@@ -25,7 +25,7 @@ public class ProfileBuilderTest {
         LocalDateTime now = LocalDateTime.now();
 
         Profile profile = builder
-                .withUserID(0L)
+                .withUserID("0")
                 .withReputation(0L)
                 .withImage(new Byte[0])
                 .withFirstName("first")
@@ -35,7 +35,7 @@ public class ProfileBuilderTest {
                 .withCreatedAt(now)
                 .build();
 
-        assertThat(profile.getUserID()).isEqualTo(0L);
+        assertThat(profile.getUserID()).isEqualTo("0");
         assertThat(profile.getImage()).isEqualTo(new Byte[0]);
         assertThat(profile.getFirstName()).isEqualTo("first");
         assertThat(profile.getLastName()).isEqualTo("last");

@@ -33,20 +33,20 @@ public class AnswerRepositoryIT {
 
     @BeforeAll
     public void setUp() {
-        answerRepository.createAnswer(1L, 1L,"test1");
-        answerRepository.createAnswer(2L, 1L,"test2");
-        answerRepository.createAnswer(3L, 1L,"test3");
-        answerRepository.createAnswer(4L, 2L,"test4");
-        answerRepository.createAnswer(5L, 2L,"test5");
-        answerRepository.createAnswer(6L, 2L,"test6");
-        answerRepository.createAnswer(7L, 3L,"test7");
+        answerRepository.createAnswer("1", 1L,"test1");
+        answerRepository.createAnswer("2", 1L,"test2");
+        answerRepository.createAnswer("3", 1L,"test3");
+        answerRepository.createAnswer("4", 2L,"test4");
+        answerRepository.createAnswer("5", 2L,"test5");
+        answerRepository.createAnswer("6", 2L,"test6");
+        answerRepository.createAnswer("7", 3L,"test7");
     }
 
     @Test
     public void testFindById() {
         Answer answer = answerRepository.findById(1L);
 
-        assertThat(answer.getUserID()).isEqualTo(1L);
+        assertThat(answer.getUserID()).isEqualTo("1");
         assertThat(answer.getQuestionID()).isEqualTo(1L);
         assertThat(answer.getDescription()).isEqualTo("test1");
     }
@@ -106,14 +106,14 @@ public class AnswerRepositoryIT {
 
     @Test
     public void testCountNumberOfAnswersOfUser(){
-        Long count = answerRepository.countNumberOfAnswersOfUser(1L);
+        Long count = answerRepository.countNumberOfAnswersOfUser("1");
 
         assertThat(count).isEqualTo(1L);
     }
 
     @Test
     public void testCountNumberOfAnswersOfUserIsZero(){
-        Long count = answerRepository.countNumberOfAnswersOfUser(99L);
+        Long count = answerRepository.countNumberOfAnswersOfUser("99");
 
         assertThat(count).isEqualTo(0L);
     }

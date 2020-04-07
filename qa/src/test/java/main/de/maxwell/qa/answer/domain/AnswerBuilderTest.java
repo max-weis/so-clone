@@ -25,14 +25,14 @@ public class AnswerBuilderTest {
         LocalDateTime now = LocalDateTime.now();
 
         Answer answer = builder
-                .withUserID(0L)
+                .withUserID("0")
                 .withQuestionID(0L)
                 .withDescription("test")
                 .withModifiedAt(now)
                 .withCreatedAt(now)
                 .build();
 
-        assertThat(answer.getUserID()).isEqualTo(0L);
+        assertThat(answer.getUserID()).isEqualTo("0");
         assertThat(answer.getQuestionID()).isEqualTo(0L);
         assertThat(answer.getDescription()).isEqualTo("test");
         assertThat(answer.getRating()).isEqualTo(0L);

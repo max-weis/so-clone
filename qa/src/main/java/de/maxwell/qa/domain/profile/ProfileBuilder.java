@@ -12,7 +12,7 @@ public class ProfileBuilder {
         this.profile = new Profile();
     }
 
-    public ProfileBuilder withUserID(final Long userID) {
+    public ProfileBuilder withUserID(final String userID) {
         notNull(userID, "userId cannot be null");
         this.profile.setUserID(userID);
         return this;

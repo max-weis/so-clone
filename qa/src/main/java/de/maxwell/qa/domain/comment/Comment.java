@@ -17,7 +17,7 @@ public class Comment {
     private Long id;
 
     @Column(name = "COL_USER_ID", nullable = false)
-    private Long userID;
+    private String userID;
 
     @Column(name = "COL_DESCRIPTION", nullable = false)
     private String description;
@@ -53,11 +53,11 @@ public class Comment {
         this.id = id;
     }
 
-    public Long getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(Long userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

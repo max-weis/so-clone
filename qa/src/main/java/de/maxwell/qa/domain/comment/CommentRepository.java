@@ -83,7 +83,7 @@ public class CommentRepository {
      * @return
      */
     @Transactional
-    public Comment createComment(final Long userID, final String description) throws IllegalArgumentException {
+    public Comment createComment(final String userID, final String description) throws IllegalArgumentException {
         try {
             notNull(userID, "userID cannot be null");
             notNull(description, "description cannot be null");

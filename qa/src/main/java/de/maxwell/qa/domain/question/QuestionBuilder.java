@@ -13,7 +13,7 @@ public class QuestionBuilder {
         this.question = new Question();
     }
 
-    public QuestionBuilder withUserID(final Long userID) {
+    public QuestionBuilder withUserID(final String userID) {
         notNull(userID, "userId cannot be null");
         this.question.setUserID(userID);
         return this;

@@ -24,7 +24,7 @@ public class QuestionBuilderTest {
     public void testBuild() {
         LocalDateTime now = LocalDateTime.now();
 
-        Question question = builder.withUserID(0L)
+        Question question = builder.withUserID("0")
                 .withTitle("test")
                 .withDescription("test")
                 .withCorrectAnswer(1L)
@@ -32,7 +32,7 @@ public class QuestionBuilderTest {
                 .withModifiedAt(now)
                 .build();
 
-        assertThat(question.getUserID()).isEqualTo(0L);
+        assertThat(question.getUserID()).isEqualTo("0");
         assertThat(question.getTitle()).isEqualTo("test");
         assertThat(question.getDescription()).isEqualTo("test");
         assertThat(question.getNumberOfAnswers()).isEqualTo(0L);

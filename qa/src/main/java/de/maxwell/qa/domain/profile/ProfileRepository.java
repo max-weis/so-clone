@@ -83,7 +83,7 @@ public class ProfileRepository {
      * @return
      */
     @Transactional
-    public Profile createProfile(final Long userID, String firstName) throws IllegalArgumentException {
+    public Profile createProfile(final String userID, String firstName) throws IllegalArgumentException {
         try {
             notNull(userID, "userID cannot be null");
             notNull(firstName, "firstName cannot be null");

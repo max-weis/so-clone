@@ -13,7 +13,7 @@ public class AnswerBuilder {
         answer = new Answer();
     }
 
-    public AnswerBuilder withUserID(final Long userID) {
+    public AnswerBuilder withUserID(final String userID) {
         notNull(userID, "userId cannot be null");
         this.answer.setUserID(userID);
         return this;

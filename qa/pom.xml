@@ -24,7 +24,7 @@
     <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-web-api</artifactId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
             <version>${version.jakarta-ee}</version>
             <scope>provided</scope>
         </dependency>
@@ -119,6 +119,10 @@
             <artifactId>HikariCP</artifactId>
             <version>3.4.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-jsonb</artifactId>
         </dependency>
     </dependencies>
     <build>

@@ -18,7 +18,7 @@ public class Question {
     private Long id;
 
     @Column(name = "COL_USER_ID", nullable = false)
-    private Long userID;
+    private String userID;
 
     @Column(name = "COL_RATING")
     private Long rating;
@@ -67,11 +67,11 @@ public class Question {
         this.id = id;
     }
 
-    public Long getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(final Long userID) {
+    public void setUserID(final String userID) {
         this.userID = userID;
     }
 

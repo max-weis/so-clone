@@ -30,20 +30,20 @@ public class CommentRepositoryIT {
 
     @BeforeAll
     public void setUp() {
-        commentRepository.createComment(1L, "test1");
-        commentRepository.createComment(1L, "test3");
-        commentRepository.createComment(1L, "test3");
-        commentRepository.createComment(1L, "test4");
-        commentRepository.createComment(1L, "test5");
-        commentRepository.createComment(1L, "test6");
-        commentRepository.createComment(1L, "test7");
+        commentRepository.createComment("1", "test1");
+        commentRepository.createComment("1", "test3");
+        commentRepository.createComment("1", "test3");
+        commentRepository.createComment("1", "test4");
+        commentRepository.createComment("1", "test5");
+        commentRepository.createComment("1", "test6");
+        commentRepository.createComment("1", "test7");
     }
 
     @Test
     public void testFindById() {
         Comment comment = commentRepository.findById(1L);
 
-        assertThat(comment.getUserID()).isEqualTo(1L);
+        assertThat(comment.getUserID()).isEqualTo("1");
         assertThat(comment.getDescription()).isEqualTo("test1");
     }
 

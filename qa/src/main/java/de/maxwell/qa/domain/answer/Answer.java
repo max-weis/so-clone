@@ -18,7 +18,7 @@ public class Answer {
     private Long id;
 
     @Column(name = "COL_USER_ID", nullable = false)
-    private Long userID;
+    private String userID;
 
     @Column(name = "COL_QUESTION_ID", nullable = false)
     private Long questionID;
@@ -68,11 +68,11 @@ public class Answer {
         this.questionID = questionID;
     }
 
-    public Long getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(Long userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

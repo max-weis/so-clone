@@ -83,7 +83,7 @@ public class AnswerRepository {
      * @return
      */
     @Transactional
-    public Answer createAnswer(final Long userID, final Long questionID,final String description) throws IllegalArgumentException {
+    public Answer createAnswer(final String userID, final Long questionID, final String description) throws IllegalArgumentException {
         try {
             notNull(userID, "userID cannot be null");
             notNull(questionID, "questionID cannot be null");
@@ -199,7 +199,7 @@ public class AnswerRepository {
      * @param userID given user
      * @return number of answers
      */
-    public Long countNumberOfAnswersOfUser(final Long userID) {
+    public Long countNumberOfAnswersOfUser(final String userID) {
         LOG.info("Find answers of user: {}", userID);
 
         CriteriaBuilder cb = em.getCriteriaBuilder();

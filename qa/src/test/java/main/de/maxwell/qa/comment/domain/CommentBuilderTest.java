@@ -25,13 +25,13 @@ public class CommentBuilderTest {
         LocalDateTime now = LocalDateTime.now();
 
         Comment comment = builder
-                .withUserID(0L)
+                .withUserID("0")
                 .withDescription("test")
                 .withModifiedAt(now)
                 .withCreatedAt(now)
                 .build();
 
-        assertThat(comment.getUserID()).isEqualTo(0L);
+        assertThat(comment.getUserID()).isEqualTo("0");
         assertThat(comment.getDescription()).isEqualTo("test");
         assertThat(comment.getRating()).isEqualTo(0L);
         assertThat(comment.getCreatedAt()).isEqualTo(now);

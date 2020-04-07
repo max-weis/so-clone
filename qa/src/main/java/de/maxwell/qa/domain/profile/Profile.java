@@ -18,7 +18,7 @@ public class Profile {
     private Long id;
 
     @Column(name = "COL_USER_ID", nullable = false)
-    private Long userID;
+    private String userID;
 
     @Column(name = "COL_IMAGE")
     private Byte[] image;
@@ -62,11 +62,11 @@ public class Profile {
         this.id = id;
     }
 
-    public Long getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(Long userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

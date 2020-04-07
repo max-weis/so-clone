@@ -13,7 +13,7 @@ public class CommentBuilder {
         this.comment = new Comment();
     }
 
-    public CommentBuilder withUserID(final Long userID) {
+    public CommentBuilder withUserID(final String userID) {
         notNull(userID, "userId cannot be null");
         this.comment.setUserID(userID);
         return this;

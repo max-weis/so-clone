@@ -74,7 +74,8 @@ public class QuestionResource {
 
             LOG.info("New question with ID: {} created", question.getId());
 
-            return Response.ok()
+            return Response
+                    .status(Response.Status.CREATED)
                     .entity(question)
                     .build();
         } catch (Exception e) {
@@ -85,7 +86,7 @@ public class QuestionResource {
     }
 
     @GET
-    public Response getQuestionsPaginated(@Size(min = 0, max = 50) @QueryParam("limit") final Integer limit, @Size(min = 0) @QueryParam("offset") final Integer offset) {
+    public Response listQuestionsPaginated(@Size(min = 0, max = 50) @QueryParam("limit") final Integer limit, @Size(min = 0) @QueryParam("offset") final Integer offset) {
         List<Question> questions = questionRepository.listAllPaginated(limit, offset);
         LOG.info("Found {} questions", limit * offset);
 

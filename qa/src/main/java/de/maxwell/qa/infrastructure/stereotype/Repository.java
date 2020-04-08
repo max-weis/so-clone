@@ -1,4 +1,4 @@
-package de.maxwell.qa.infrastructure.repository;
+package de.maxwell.qa.infrastructure.stereotype;
 
 import javax.ejb.ApplicationException;
 import javax.enterprise.inject.Stereotype;

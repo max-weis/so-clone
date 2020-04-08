@@ -1,6 +1,6 @@
 package de.maxwell.qa.domain.profile;
 
-import de.maxwell.qa.infrastructure.repository.Repository;
+import de.maxwell.qa.infrastructure.stereotype.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

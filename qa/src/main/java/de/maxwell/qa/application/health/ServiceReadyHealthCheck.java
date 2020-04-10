@@ -29,16 +29,31 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.Readiness;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.sql.DataSource;
 
 @Readiness
 @ApplicationScoped
 public class ServiceReadyHealthCheck implements HealthCheck {
 
+    @Inject
+    private DataSource datasource;
+
+    // checks if the database connection is valid every 10 seconds
+    public boolean isHealthy() {
+        try {
+            return datasource.getConnection()
+                    .isValid(10);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @Override
     public HealthCheckResponse call() {
 
         return HealthCheckResponse.named(ServiceReadyHealthCheck.class.getSimpleName())
-                .withData("ready", true)
+                .withData("ready", isHealthy())
                 .up()
                 .build();
 

@@ -43,6 +43,16 @@ public class CommentBuilder {
         return this;
     }
 
+    public CommentBuilder withQuestionID(final Long questionID) {
+        this.comment.setQuestionID(questionID);
+        return this;
+    }
+
+    public CommentBuilder withAnswerID(final Long answerID) {
+        this.comment.setAnswerID(answerID);
+        return this;
+    }
+
     public CommentBuilder withRating(final Long rating) {
         notNull(rating, "rating cannot be null");
         this.comment.setRating(rating);
@@ -68,7 +78,12 @@ public class CommentBuilder {
         return this;
     }
 
-    public Comment build() {
+    public Comment build() throws IllegalStateException {
+        if (this.comment.getQuestionID() != null && this.comment.getAnswerID() != null) {
+            throw new IllegalStateException("QuestionID and AnswerID cannot be set at once");
+        } else if (this.comment.getQuestionID() == null && this.comment.getAnswerID() == null) {
+            throw new IllegalStateException("QuestionID or AnswerID has to be set");
+        }
         return this.comment;
     }
 

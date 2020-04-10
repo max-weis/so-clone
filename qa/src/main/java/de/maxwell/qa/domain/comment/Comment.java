@@ -44,6 +44,12 @@ public class Comment {
     @Column(name = "COL_USER_ID", nullable = false)
     private String userID;
 
+    @Column(name = "COL_QUESTION_ID")
+    private Long questionID;
+
+    @Column(name = "COL_ANSWER_ID", nullable = false)
+    private Long answerID;
+
     @Column(name = "COL_DESCRIPTION", nullable = false)
     private String description;
 
@@ -69,7 +75,6 @@ public class Comment {
         return new CommentBuilder();
     }
 
-
     public Long getId() {
         return id;
     }
@@ -84,6 +89,22 @@ public class Comment {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public Long getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(final Long questionID) {
+        this.questionID = questionID;
+    }
+
+    public Long getAnswerID() {
+        return answerID;
+    }
+
+    public void setAnswerID(final Long answerID) {
+        this.answerID = answerID;
     }
 
     public String getDescription() {

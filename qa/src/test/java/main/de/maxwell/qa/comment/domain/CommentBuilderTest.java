@@ -34,6 +34,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CommentBuilderTest {
 
@@ -45,21 +46,59 @@ public class CommentBuilderTest {
     }
 
     @Test
-    public void testBuild() {
+    public void testBuildWithQuestionID() {
         LocalDateTime now = LocalDateTime.now();
 
         Comment comment = builder
                 .withUserID("0")
                 .withDescription("test")
+                .withQuestionID(1L)
                 .withModifiedAt(now)
                 .withCreatedAt(now)
                 .build();
 
         assertThat(comment.getUserID()).isEqualTo("0");
+        assertThat(comment.getQuestionID()).isEqualTo(1L);
         assertThat(comment.getDescription()).isEqualTo("test");
         assertThat(comment.getRating()).isEqualTo(0L);
         assertThat(comment.getCreatedAt()).isEqualTo(now);
         assertThat(comment.getModifiedAt()).isEqualTo(now);
+    }
+
+    @Test
+    public void testBuildWithAnswerID() {
+        LocalDateTime now = LocalDateTime.now();
+
+        Comment comment = builder
+                .withUserID("0")
+                .withDescription("test")
+                .withAnswerID(1L)
+                .withModifiedAt(now)
+                .withCreatedAt(now)
+                .build();
+
+        assertThat(comment.getUserID()).isEqualTo("0");
+        assertThat(comment.getAnswerID()).isEqualTo(1L);
+        assertThat(comment.getDescription()).isEqualTo("test");
+        assertThat(comment.getRating()).isEqualTo(0L);
+        assertThat(comment.getCreatedAt()).isEqualTo(now);
+        assertThat(comment.getModifiedAt()).isEqualTo(now);
+    }
+
+    @Test
+    public void testBuildWithQuestionIDAndAnswerID() {
+        assertThatThrownBy(() -> builder.withAnswerID(1L)
+                .withQuestionID(1L)
+                .build()).isInstanceOf(IllegalStateException.class)
+                .hasMessage("QuestionID and AnswerID cannot be set at once");
+    }
+
+    @Test
+    public void testBuildWithNoQuestionIDOrAnswerID() {
+        assertThatThrownBy(() -> builder.withAnswerID(null)
+                .withQuestionID(null)
+                .build()).isInstanceOf(IllegalStateException.class)
+                .hasMessage("QuestionID or AnswerID has to be set");
     }
 
     @Test

@@ -1,11 +1,9 @@
 package de.maxwell.qa.application.question;
 
-import de.maxwell.qa.domain.answer.Answer;
 import de.maxwell.qa.domain.answer.AnswerNotFoundException;
-import de.maxwell.qa.domain.answer.AnswerRepository;
 import de.maxwell.qa.domain.question.Question;
 import de.maxwell.qa.domain.question.QuestionNotFoundException;
-import de.maxwell.qa.domain.question.QuestionRepository;
+import de.maxwell.qa.domain.question.QuestionService;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +31,7 @@ public class QuestionResource {
     private static final Logger LOG = LoggerFactory.getLogger(QuestionResource.class);
 
     @Inject
-    QuestionRepository questionRepository;
-
-    @Inject
-    AnswerRepository answerRepository;
+    QuestionService service;
 
     @Inject
     JsonWebToken jwt;
@@ -47,7 +42,7 @@ public class QuestionResource {
         try {
             LOG.info("Find question with ID: {}", questionId);
 
-            Question question = questionRepository.findById(questionId);
+            Question question = this.service.findQuestion(questionId);
 
             return Response.ok()
                     .entity(question)
@@ -70,7 +65,7 @@ public class QuestionResource {
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .build();
             }
-            Question question = questionRepository.createQuestion(baseQuestion.getUserID(), baseQuestion.getTitle(), baseQuestion.getDescription());
+            Question question = this.service.createQuestion(baseQuestion.getUserID(), baseQuestion.getTitle(), baseQuestion.getDescription());
 
             LOG.info("New question with ID: {} created", question.getId());
 
@@ -87,7 +82,7 @@ public class QuestionResource {
 
     @GET
     public Response listQuestionsPaginated(@Size(min = 0, max = 50) @QueryParam("limit") final Integer limit, @Size(min = 0) @QueryParam("offset") final Integer offset) {
-        List<Question> questions = questionRepository.listAllPaginated(limit, offset);
+        List<Question> questions = this.service.findQuestions(limit, offset);
         LOG.info("Found {} questions", limit * offset);
 
         return Response.ok()
@@ -99,7 +94,7 @@ public class QuestionResource {
     public Response updateTitle(final QuestionUpdateTitleDTO newQuestion) {
         try {
             LOG.info("Update title of the question id {}", newQuestion.getId());
-            Question question = questionRepository.findById(newQuestion.getId());
+            Question question = this.service.findQuestion(newQuestion.getId());
 
             String sub = jwt.getSubject();
 
@@ -108,7 +103,7 @@ public class QuestionResource {
                         .build();
             }
 
-            Question updatedQuestion = questionRepository.updateTitle(newQuestion.getId(), newQuestion.getTitle());
+            Question updatedQuestion = this.service.updateTitle(newQuestion.getId(), newQuestion.getTitle());
 
             return Response.ok()
                     .entity(updatedQuestion)
@@ -125,7 +120,7 @@ public class QuestionResource {
     public Response updateDescription(final QuestionUpdateDescriptionDTO newQuestion) {
         try {
             LOG.info("Update description of the question id {}", newQuestion.getId());
-            Question question = questionRepository.findById(newQuestion.getId());
+            Question question = this.service.findQuestion(newQuestion.getId());
 
             String sub = jwt.getSubject();
 
@@ -134,7 +129,7 @@ public class QuestionResource {
                         .build();
             }
 
-            Question updatedQuestion = questionRepository.updateDescription(newQuestion.getId(), newQuestion.getDescription());
+            Question updatedQuestion = this.service.updateDescription(newQuestion.getId(), newQuestion.getDescription());
 
             return Response.ok()
                     .entity(updatedQuestion)
@@ -151,11 +146,12 @@ public class QuestionResource {
     @Path("/{id}/view")
     public Response incrementView(@PathParam("id") final Long questionId) {
         try {
-            Long view = questionRepository.incrementView(questionId);
+            Long view = this.service.incrementView(questionId);
 
             LOG.info("Increment view of the question id {}", questionId);
 
             return Response.ok()
+                    .entity(view)
                     .build();
         } catch (QuestionNotFoundException q) {
             LOG.info("Could not find question with ID: {}", questionId);
@@ -169,7 +165,7 @@ public class QuestionResource {
     @Path("/{id}/rating")
     public Response upvoteRating(@PathParam("id") final Long questionId) {
         try {
-            Long view = questionRepository.updateRating(questionId, 1);
+            Long view = this.service.upvoteRating(questionId);
 
             LOG.info("Increment rating of the question id {}", questionId);
 
@@ -188,7 +184,7 @@ public class QuestionResource {
     @Path("/{id}/rating")
     public Response downvoteRating(@PathParam("id") final Long questionId) {
         try {
-            Long view = questionRepository.updateRating(questionId, -1);
+            Long view = this.service.downvoteRating(questionId);
 
             LOG.info("Decrement rating of the question id {}", questionId);
 
@@ -207,10 +203,18 @@ public class QuestionResource {
     @Path("/{id}/answer/{answerId}")
     public Response setCorrectAnswer(@PathParam("id") final Long questionId, @PathParam("answerId") final Long answerId) {
         try {
-            LOG.info("Set correct answer of ID: {} for the question with ID: {}", questionId, answerId);
-            Answer answer = answerRepository.findById(answerId);
+            Question question = this.service.findQuestion(questionId);
 
-            Long correctAnswer = questionRepository.setCorrectAnswer(questionId, answer.getId());
+            String sub = jwt.getSubject();
+
+            if (!sub.equals(question.getUserID())) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .build();
+            }
+
+            LOG.info("Set correct answer of ID: {} for the question with ID: {}", questionId, answerId);
+
+            Long correctAnswer = this.service.setCorrectAnswer(questionId, answerId);
 
             return Response.ok()
                     .entity(correctAnswer)
@@ -233,7 +237,7 @@ public class QuestionResource {
     public Response getCount(@QueryParam("id") final String userID) {
         LOG.info("Count number of question from user with ID: {}", userID);
 
-        Long count = questionRepository.countNumberOfQuestionsOfUser(userID);
+        Long count = this.service.getCount(userID);
 
         LOG.info("user with ID: {} has {} questions", userID, count);
 
@@ -248,7 +252,7 @@ public class QuestionResource {
         try {
             String sub = jwt.getSubject();
 
-            Question question = questionRepository.findById(questionId);
+            Question question = this.service.findQuestion(questionId);
 
             if (!sub.equals(question.getUserID())) {
                 return Response.status(Response.Status.UNAUTHORIZED)
@@ -257,7 +261,7 @@ public class QuestionResource {
 
             LOG.info("Delete question with ID: {}", questionId);
 
-            questionRepository.removeQuestion(questionId);
+            this.service.removeQuestion(questionId);
 
             return Response.ok()
                     .build();

@@ -1,11 +1,14 @@
 package de.maxwell.qa.domain.question;
 
+import de.maxwell.qa.domain.answer.Answer;
+import de.maxwell.qa.domain.answer.AnswerNotFoundException;
 import de.maxwell.qa.domain.answer.AnswerRepository;
 import de.maxwell.qa.infrastructure.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.List;
 
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -29,6 +32,15 @@ public class QuestionService {
         return questionRepository.findById(id);
     }
 
+    public List<Question> findQuestions(final Integer limit, final Integer offset) {
+        notNull(limit, "limit cannot be null");
+        notNull(offset, "offset cannot be null");
+
+        LOG.info("Find {} questions", limit * offset);
+
+        return this.questionRepository.listAllPaginated(limit, offset);
+    }
+
     public Question createQuestion(final String userID, final String title, final String description) throws QuestionNotFoundException, NullPointerException {
         notNull(userID, "userID cannot be null");
         notNull(title, "title cannot be null");
@@ -43,7 +55,77 @@ public class QuestionService {
         return questionRepository.createQuestion(userID, title, description);
     }
 
-    public Question updateTitle() {
-        return null;
+    public Question updateTitle(final Long id, final String title) throws QuestionNotFoundException, NullPointerException {
+        notNull(id, "id cannot be null");
+
+        notNull(title, "title cannot be null");
+        notEmpty(title, "title cannot be empty");
+
+        LOG.info("Update title of Question with id: {}", id);
+
+        return this.questionRepository.updateTitle(id, title);
+    }
+
+    public Question updateDescription(final Long id, final String description) throws QuestionNotFoundException, NullPointerException {
+        notNull(id, "id cannot be null");
+
+        notNull(description, "description cannot be null");
+        notEmpty(description, "description cannot be empty");
+
+        LOG.info("Update description of Question with id: {}", id);
+
+        return this.questionRepository.updateDescription(id, description);
+    }
+
+    public Long incrementView(final Long id) throws QuestionNotFoundException, NullPointerException {
+        notNull(id, "id cannot be null");
+
+        LOG.info("increment view of Question with id: {}", id);
+
+        return this.questionRepository.incrementView(id);
+    }
+
+    public Long upvoteRating(final Long id) throws QuestionNotFoundException, NullPointerException {
+        notNull(id, "id cannot be null");
+
+        LOG.info("Upvote Rating with id: {}", id);
+
+        return questionRepository.updateRating(id, 1);
+    }
+
+    public Long downvoteRating(final Long id) throws QuestionNotFoundException, NullPointerException {
+        notNull(id, "id cannot be null");
+
+        LOG.info("Downvote Rating with id: {}", id);
+
+        return questionRepository.updateRating(id, -1);
+    }
+
+    public Long setCorrectAnswer(final Long questionId, final Long answerId) throws QuestionNotFoundException, AnswerNotFoundException, NullPointerException {
+        notNull(questionId, "questionID cannot be null");
+        notNull(answerId, "answerId cannot be null");
+
+        Answer answer = this.answerRepository.findById(answerId);
+
+        LOG.info("Set correct answer of question with id: {}", questionId);
+        return this.questionRepository.setCorrectAnswer(questionId, answer.getId());
+    }
+
+    public Long getCount(final String userID) throws QuestionNotFoundException, NullPointerException {
+
+        notNull(userID, "userId cannot be null");
+        notEmpty(userID, "userId cannot be empty");
+
+        LOG.info("Get number of question of user with ID: {}", userID);
+
+        return questionRepository.countNumberOfQuestionsOfUser(userID);
+    }
+
+    public void removeQuestion(final Long id) throws QuestionNotFoundException, NullPointerException {
+        notNull(id, "id cannot be null");
+
+        LOG.info("Delete question with id: {}", id);
+
+        questionRepository.removeQuestion(id);
     }
 }

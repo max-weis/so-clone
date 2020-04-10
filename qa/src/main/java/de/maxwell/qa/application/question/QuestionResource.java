@@ -105,12 +105,12 @@ public class QuestionResource {
         try {
             LOG.info("Create new question");
 
-            String sub = jwt.getSubject();
-
-            if (!sub.equals(baseQuestion.getUserID())) {
+            boolean check = checkJWT(jwt, baseQuestion.getUserID());
+            if (!check) {
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .build();
             }
+
             Question question = this.service.createQuestion(baseQuestion.getUserID(), baseQuestion.getTitle(), baseQuestion.getDescription());
 
             LOG.info("New question with ID: {} created", question.getId());
@@ -166,9 +166,8 @@ public class QuestionResource {
             LOG.info("Update title of the question id {}", newQuestion.getId());
             Question question = this.service.findQuestion(newQuestion.getId());
 
-            String sub = jwt.getSubject();
-
-            if (!sub.equals(question.getUserID())) {
+            boolean check = checkJWT(jwt, question.getUserID());
+            if (!check) {
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .build();
             }
@@ -205,9 +204,8 @@ public class QuestionResource {
             LOG.info("Update description of the question id {}", newQuestion.getId());
             Question question = this.service.findQuestion(newQuestion.getId());
 
-            String sub = jwt.getSubject();
-
-            if (!sub.equals(question.getUserID())) {
+            boolean check = checkJWT(jwt, question.getUserID());
+            if (!check) {
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .build();
             }
@@ -340,9 +338,8 @@ public class QuestionResource {
         try {
             Question question = this.service.findQuestion(questionId);
 
-            String sub = jwt.getSubject();
-
-            if (!sub.equals(question.getUserID())) {
+            boolean check = checkJWT(jwt, question.getUserID());
+            if (!check) {
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .build();
             }
@@ -422,11 +419,11 @@ public class QuestionResource {
 
             Question question = this.service.findQuestion(questionId);
 
-            if (!sub.equals(question.getUserID())) {
+            boolean check = checkJWT(jwt, question.getUserID());
+            if (!check) {
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .build();
             }
-
             LOG.info("Delete question with ID: {}", questionId);
 
             this.service.removeQuestion(questionId);
@@ -449,5 +446,21 @@ public class QuestionResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .build();
         }
+    }
+
+    /**
+     * Checks if the request has the correct user id
+     *
+     * @param jwt    to check
+     * @param userID supposed user id
+     * @return false if unauthorized
+     */
+    private boolean checkJWT(final JsonWebToken jwt, final String userID) {
+        String sub = jwt.getSubject();
+
+        if (!sub.equals(userID)) {
+            return false;
+        }
+        return true;
     }
 }

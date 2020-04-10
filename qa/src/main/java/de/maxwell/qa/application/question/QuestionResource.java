@@ -75,6 +75,10 @@ public class QuestionResource {
             LOG.info("Could not find question with ID: {}", questionId);
             return Response.status(Response.Status.NOT_FOUND)
                     .build();
+        } catch (NullPointerException n) {
+            LOG.info("Arguments have errors {}", n.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .build();
         }
     }
 
@@ -97,8 +101,8 @@ public class QuestionResource {
                     .status(Response.Status.CREATED)
                     .entity(question)
                     .build();
-        } catch (Exception e) {
-            LOG.info("Could not create question");
+        } catch (NullPointerException n) {
+            LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         }
@@ -137,6 +141,10 @@ public class QuestionResource {
             return Response
                     .status(Response.Status.NOT_FOUND)
                     .build();
+        } catch (NullPointerException n) {
+            LOG.info("Arguments have errors {}", n.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .build();
         }
     }
 
@@ -163,6 +171,10 @@ public class QuestionResource {
             return Response
                     .status(Response.Status.NOT_FOUND)
                     .build();
+        } catch (NullPointerException n) {
+            LOG.info("Arguments have errors {}", n.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .build();
         }
     }
 
@@ -181,6 +193,10 @@ public class QuestionResource {
             LOG.info("Could not find question with ID: {}", questionId);
             return Response
                     .status(Response.Status.NOT_FOUND)
+                    .build();
+        } catch (NullPointerException n) {
+            LOG.info("Arguments have errors {}", n.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         }
     }
@@ -201,6 +217,10 @@ public class QuestionResource {
             return Response
                     .status(Response.Status.NOT_FOUND)
                     .build();
+        } catch (NullPointerException n) {
+            LOG.info("Arguments have errors {}", n.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .build();
         }
     }
 
@@ -219,6 +239,10 @@ public class QuestionResource {
             LOG.info("Could not find question with ID: {}", questionId);
             return Response
                     .status(Response.Status.NOT_FOUND)
+                    .build();
+        } catch (NullPointerException n) {
+            LOG.info("Arguments have errors {}", n.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         }
     }
@@ -253,21 +277,36 @@ public class QuestionResource {
             return Response
                     .status(Response.Status.NOT_FOUND)
                     .build();
+        } catch (NullPointerException n) {
+            LOG.info("Arguments have errors {}", n.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .build();
         }
     }
 
     @GET
     @Path("/count")
     public Response getCount(@QueryParam("id") final String userID) {
-        LOG.info("Count number of question from user with ID: {}", userID);
+        try {
 
-        Long count = this.service.getCount(userID);
+            LOG.info("Count number of question from user with ID: {}", userID);
 
-        LOG.info("user with ID: {} has {} questions", userID, count);
+            Long count = this.service.getCount(userID);
 
-        return Response.ok()
-                .entity(count)
-                .build();
+            LOG.info("user with ID: {} has {} questions", userID, count);
+
+            return Response.ok()
+                    .entity(count)
+                    .build();
+        } catch (QuestionNotFoundException q) {
+            LOG.info("Could not find question");
+            return Response.status(Response.Status.NOT_FOUND)
+                    .build();
+        } catch (NullPointerException n) {
+            LOG.info("Arguments have errors {}", n.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .build();
+        }
     }
 
     @DELETE
@@ -292,6 +331,10 @@ public class QuestionResource {
         } catch (QuestionNotFoundException q) {
             LOG.info("Could not find question with ID: {}", questionId);
             return Response.status(Response.Status.NOT_FOUND)
+                    .build();
+        } catch (NullPointerException n) {
+            LOG.info("Arguments have errors {}", n.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         }
     }

@@ -76,7 +76,8 @@ public class CommentRepository {
      * @param offset of the page
      * @return list of comments
      */
-    public List<Comment> listAllPaginated(final Integer limit, final Integer offset) {
+    public List<Comment> listAllPaginatedByQuestionID(final Long questionID, final Integer limit, final Integer offset) {
+        notNull(questionID, "questionID cannot be null");
         notNull(limit, "limit cannot be null");
         notNull(offset, "offset cannot be null");
 
@@ -87,6 +88,41 @@ public class CommentRepository {
 
         Root<Comment> root = cq.from(Comment.class);
         cq.select(root);
+
+        cq.where(cb.equal(root.get("questionID"), questionID));
+
+        TypedQuery<Comment> query = em.createQuery(cq);
+        query.setFirstResult(offset * limit);
+        query.setMaxResults(limit);
+
+        List<Comment> comments = query.getResultList();
+
+        LOG.info("Found {} comments", comments.size());
+
+        return comments;
+    }
+
+    /**
+     * Find paginated comments
+     *
+     * @param limit  max number of comment per page
+     * @param offset of the page
+     * @return list of comments
+     */
+    public List<Comment> listAllPaginatedByAnswerID(final Long answerID, final Integer limit, final Integer offset) {
+        notNull(answerID, "answerID cannot be null");
+        notNull(limit, "limit cannot be null");
+        notNull(offset, "offset cannot be null");
+
+        LOG.info("Find {} comments with offset {}", limit, offset);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Comment> cq = cb.createQuery(Comment.class);
+
+        Root<Comment> root = cq.from(Comment.class);
+        cq.select(root);
+
+        cq.where(cb.equal(root.get("answerID"), answerID));
 
         TypedQuery<Comment> query = em.createQuery(cq);
         query.setFirstResult(offset * limit);
@@ -107,16 +143,30 @@ public class CommentRepository {
      * @return
      */
     @Transactional
-    public Comment createComment(final String userID, final String description) throws IllegalArgumentException {
+    public Comment createComment(final String userID, final Long questionID, final Long answerID, final String description) throws IllegalArgumentException {
         try {
             notNull(userID, "userID cannot be null");
             notNull(description, "description cannot be null");
             notEmpty(description, "description cannot be empty");
 
-            Comment comment = Comment.newBuilder()
-                    .withUserID(userID)
-                    .withDescription(description)
-                    .build();
+            Comment comment = null;
+
+            if (questionID != null) {
+                comment = Comment.newBuilder()
+                        .withUserID(userID)
+                        .withQuestionID(questionID)
+                        .withDescription(description)
+                        .build();
+            }
+
+            if (answerID != null) {
+                comment = Comment.newBuilder()
+                        .withUserID(userID)
+                        .withAnswerID(answerID)
+                        .withDescription(description)
+                        .build();
+            }
+
 
             em.persist(comment);
 

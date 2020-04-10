@@ -54,13 +54,13 @@ public class CommentRepositoryIT {
 
     @BeforeAll
     public void setUp() {
-        commentRepository.createComment("1", "test1");
-        commentRepository.createComment("1", "test3");
-        commentRepository.createComment("1", "test3");
-        commentRepository.createComment("1", "test4");
-        commentRepository.createComment("1", "test5");
-        commentRepository.createComment("1", "test6");
-        commentRepository.createComment("1", "test7");
+        commentRepository.createComment("1", 1L, null, "test1");
+        commentRepository.createComment("1", 1L, null, "test3");
+        commentRepository.createComment("1", 1L, null, "test3");
+        commentRepository.createComment("1", 1L, null, "test4");
+        commentRepository.createComment("1", 1L, null, "test5");
+        commentRepository.createComment("1", 1L, null, "test6");
+        commentRepository.createComment("1", 1L, null, "test7");
     }
 
     @Test
@@ -78,10 +78,17 @@ public class CommentRepositoryIT {
     }
 
     @Test
-    public void testListAllPaginated() {
-        List<Comment> comments = commentRepository.listAllPaginated(5, 0);
+    public void testListAllPaginatedByQuestionID() {
+        List<Comment> comments = commentRepository.listAllPaginatedByQuestionID(1L, 5, 0);
 
         assertThat(comments.size()).isEqualTo(5);
+    }
+
+    @Test
+    public void testListAllPaginatedByAnswerID() {
+        List<Comment> comments = commentRepository.listAllPaginatedByAnswerID(1L, 5, 0);
+
+        assertThat(comments.size()).isEqualTo(0);
     }
 
     @Test
@@ -96,7 +103,6 @@ public class CommentRepositoryIT {
         assertThatThrownBy(() -> commentRepository.updateDescription(99L, "new Description")).isInstanceOf(CommentNotFoundException.class)
                 .hasMessageContaining("Could not find comment with id 99");
     }
-
 
     @Test
     public void testUpdateRatingPositive() {

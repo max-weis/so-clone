@@ -32,7 +32,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
-//TODO: add question and answer id
 @Entity
 @Table(name = "TAB_COMMENT")
 public class Comment {
@@ -47,7 +46,7 @@ public class Comment {
     @Column(name = "COL_QUESTION_ID")
     private Long questionID;
 
-    @Column(name = "COL_ANSWER_ID", nullable = false)
+    @Column(name = "COL_ANSWER_ID")
     private Long answerID;
 
     @Column(name = "COL_DESCRIPTION", nullable = false)

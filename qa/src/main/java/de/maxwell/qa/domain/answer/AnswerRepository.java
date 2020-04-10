@@ -70,6 +70,38 @@ public class AnswerRepository {
     }
 
     /**
+     * Find paginated answers by questionID
+     *
+     * @param questionID id of the question
+     * @param limit  max number of answer per page
+     * @param offset of the page
+     * @return list of answers
+     */
+    public List<Answer> listAllPaginatedByQuestionID(final Long questionID, final Integer limit, final Integer offset) {
+        notNull(limit, "limit cannot be null");
+        notNull(offset, "offset cannot be null");
+
+        LOG.info("Find {} answers with offset {}", limit, offset);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Answer> cq = cb.createQuery(Answer.class);
+
+        Root<Answer> root = cq.from(Answer.class);
+        cq.select(root);
+        cq.where(cb.equal(root.get("questionID"), questionID));
+
+        TypedQuery<Answer> query = em.createQuery(cq);
+        query.setFirstResult(offset * limit);
+        query.setMaxResults(limit);
+
+        List<Answer> answers = query.getResultList();
+
+        LOG.info("Found {} answers", answers.size());
+
+        return answers;
+    }
+
+    /**
      * Find paginated answers
      *
      * @param limit  max number of answer per page

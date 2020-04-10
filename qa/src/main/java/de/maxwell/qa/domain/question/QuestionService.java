@@ -25,7 +25,6 @@
 package de.maxwell.qa.domain.question;
 
 import de.maxwell.qa.domain.answer.Answer;
-import de.maxwell.qa.domain.answer.AnswerNotFoundException;
 import de.maxwell.qa.domain.answer.AnswerRepository;
 import de.maxwell.qa.infrastructure.stereotype.Service;
 import org.slf4j.Logger;
@@ -48,7 +47,7 @@ public class QuestionService {
     @Inject
     AnswerRepository answerRepository;
 
-    public Question findQuestion(final Long id) throws QuestionNotFoundException, NullPointerException {
+    public Question findQuestion(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Find Question with ID: {}", id);
@@ -65,7 +64,7 @@ public class QuestionService {
         return this.questionRepository.listAllPaginated(limit, offset);
     }
 
-    public Question createQuestion(final String userID, final String title, final String description) throws QuestionNotFoundException, NullPointerException {
+    public Question createQuestion(final String userID, final String title, final String description) {
         notNull(userID, "userID cannot be null");
         notNull(title, "title cannot be null");
         notNull(description, "description cannot be null");
@@ -79,7 +78,7 @@ public class QuestionService {
         return questionRepository.createQuestion(userID, title, description);
     }
 
-    public Question updateTitle(final Long id, final String title) throws QuestionNotFoundException, NullPointerException {
+    public Question updateTitle(final Long id, final String title) {
         notNull(id, "id cannot be null");
 
         notNull(title, "title cannot be null");
@@ -90,7 +89,7 @@ public class QuestionService {
         return this.questionRepository.updateTitle(id, title);
     }
 
-    public Question updateDescription(final Long id, final String description) throws QuestionNotFoundException, NullPointerException {
+    public Question updateDescription(final Long id, final String description) {
         notNull(id, "id cannot be null");
 
         notNull(description, "description cannot be null");
@@ -101,7 +100,7 @@ public class QuestionService {
         return this.questionRepository.updateDescription(id, description);
     }
 
-    public Long incrementView(final Long id) throws QuestionNotFoundException, NullPointerException {
+    public Long incrementView(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("increment view of Question with id: {}", id);
@@ -109,7 +108,7 @@ public class QuestionService {
         return this.questionRepository.incrementView(id);
     }
 
-    public Long upvoteRating(final Long id) throws QuestionNotFoundException, NullPointerException {
+    public Long upvoteRating(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Upvote Rating with id: {}", id);
@@ -117,7 +116,7 @@ public class QuestionService {
         return questionRepository.updateRating(id, 1);
     }
 
-    public Long downvoteRating(final Long id) throws QuestionNotFoundException, NullPointerException {
+    public Long downvoteRating(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Downvote Rating with id: {}", id);
@@ -125,7 +124,7 @@ public class QuestionService {
         return questionRepository.updateRating(id, -1);
     }
 
-    public Long setCorrectAnswer(final Long questionId, final Long answerId) throws QuestionNotFoundException, AnswerNotFoundException, NullPointerException {
+    public Long setCorrectAnswer(final Long questionId, final Long answerId) {
         notNull(questionId, "questionID cannot be null");
         notNull(answerId, "answerId cannot be null");
 
@@ -135,7 +134,7 @@ public class QuestionService {
         return this.questionRepository.setCorrectAnswer(questionId, answer.getId());
     }
 
-    public Long getCount(final String userID) throws QuestionNotFoundException, NullPointerException {
+    public Long getCount(final String userID) {
 
         notNull(userID, "userId cannot be null");
         notEmpty(userID, "userId cannot be empty");
@@ -145,7 +144,7 @@ public class QuestionService {
         return questionRepository.countNumberOfQuestionsOfUser(userID);
     }
 
-    public void removeQuestion(final Long id) throws QuestionNotFoundException, NullPointerException {
+    public void removeQuestion(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Delete question with id: {}", id);

@@ -41,7 +41,7 @@ public class CommentService {
     @Inject
     CommentRepository commentRepository;
 
-    public Comment findComment(final Long id) throws CommentNotFoundException, NullPointerException {
+    public Comment findComment(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Find comment by id: {}", id);
@@ -49,7 +49,7 @@ public class CommentService {
         return this.commentRepository.findById(id);
     }
 
-    public List<Comment> listCommentsByQuestionID(final Long questionID, final Integer limit, final Integer offset) throws CommentNotFoundException, NullPointerException {
+    public List<Comment> listCommentsByQuestionID(final Long questionID, final Integer limit, final Integer offset) {
         notNull(questionID, "questionID cannot be null");
         notNull(limit, "limit cannot be null");
         notNull(offset, "offset cannot be null");
@@ -59,7 +59,7 @@ public class CommentService {
         return this.commentRepository.listAllPaginatedByQuestionID(questionID, limit, offset);
     }
 
-    public List<Comment> listCommentsByAnswerID(final Long answerID, final Integer limit, final Integer offset) throws CommentNotFoundException, NullPointerException {
+    public List<Comment> listCommentsByAnswerID(final Long answerID, final Integer limit, final Integer offset) {
         notNull(answerID, "answerID cannot be null");
         notNull(limit, "limit cannot be null");
         notNull(offset, "offset cannot be null");
@@ -69,7 +69,7 @@ public class CommentService {
         return this.commentRepository.listAllPaginatedByAnswerID(answerID, limit, offset);
     }
 
-    public Comment createComment(final String userID, final Long questionID, final Long answerID, final String description) throws CommentNotFoundException, NullPointerException, IllegalArgumentException {
+    public Comment createComment(final String userID, final Long questionID, final Long answerID, final String description) {
         notNull(userID, "userID cannot be null");
         notNull(questionID, "questionID cannot be null");
         notNull(answerID, "answerID cannot be null");
@@ -82,7 +82,7 @@ public class CommentService {
         return this.commentRepository.createComment(userID, questionID, answerID, description);
     }
 
-    public Comment updateDescription(final Long id, final String newDescription) throws CommentNotFoundException, NullPointerException {
+    public Comment updateDescription(final Long id, final String newDescription) {
         notNull(id, "id cannot be null");
         notNull(newDescription, "newDescription cannot be null");
 
@@ -93,7 +93,7 @@ public class CommentService {
         return this.commentRepository.updateDescription(id, newDescription);
     }
 
-    public Long decrementRating(final Long id) throws CommentNotFoundException, NullPointerException {
+    public Long decrementRating(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Decrement Rating of comment with id: {}", id);
@@ -101,7 +101,7 @@ public class CommentService {
         return this.commentRepository.updateRating(id, -1);
     }
 
-    public Long incrementRating(final Long id) throws CommentNotFoundException, NullPointerException {
+    public Long incrementRating(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Increment Rating of comment with id: {}", id);
@@ -109,7 +109,7 @@ public class CommentService {
         return this.commentRepository.updateRating(id, 1);
     }
 
-    public void removeComment(final Long id) throws CommentNotFoundException, NullPointerException {
+    public void removeComment(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Remove comment with id: {}", id);

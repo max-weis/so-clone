@@ -56,7 +56,7 @@ public class QuestionRepository {
      * @param id of the question
      * @return question
      */
-    public Question findById(final Long id) throws QuestionNotFoundException {
+    public Question findById(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Find question with id {}", id);
@@ -109,7 +109,7 @@ public class QuestionRepository {
      * @return
      */
     @Transactional
-    public Question createQuestion(final String userID, final String title, final String description) throws IllegalArgumentException {
+    public Question createQuestion(final String userID, final String title, final String description) {
         try {
             notNull(userID, "userID cannot be null");
             notNull(title, "title cannot be null");
@@ -141,7 +141,7 @@ public class QuestionRepository {
      * @return question
      */
     @Transactional
-    public Question updateTitle(final Long id, final String newTitle) throws QuestionNotFoundException {
+    public Question updateTitle(final Long id, final String newTitle) {
         notNull(id, "id cannot be null");
         notNull(newTitle, "new title cannot be null");
         notEmpty(newTitle, "new title cannot be empty");
@@ -169,7 +169,7 @@ public class QuestionRepository {
      * @return question
      */
     @Transactional
-    public Question updateDescription(final Long id, final String newDescription) throws QuestionNotFoundException {
+    public Question updateDescription(final Long id, final String newDescription) {
         notNull(id, "id cannot be null");
         notNull(newDescription, "new description cannot be null");
         notEmpty(newDescription, "new description cannot be empty");
@@ -196,7 +196,7 @@ public class QuestionRepository {
      * @return new view counter
      */
     @Transactional
-    public Long incrementView(final Long id) throws QuestionNotFoundException {
+    public Long incrementView(final Long id) {
         notNull(id, "id cannot be null");
 
         Question question = em.find(Question.class, id);
@@ -223,7 +223,7 @@ public class QuestionRepository {
      * @return new rating
      */
     @Transactional
-    public Long updateRating(final Long id, final Integer rating) throws QuestionNotFoundException, IllegalArgumentException {
+    public Long updateRating(final Long id, final Integer rating) {
         notNull(id, "id cannot be null");
         notNull(rating, "rating cannot be null");
 
@@ -254,7 +254,7 @@ public class QuestionRepository {
      * @return new answer
      */
     @Transactional
-    public Long setCorrectAnswer(final Long id, final Long answerID) throws QuestionNotFoundException {
+    public Long setCorrectAnswer(final Long id, final Long answerID) {
         notNull(id, "id cannot be null");
         notNull(answerID, "answerID cannot be null");
 
@@ -304,7 +304,7 @@ public class QuestionRepository {
      * @param id of the question
      */
     @Transactional
-    public void removeQuestion(final Long id) throws QuestionNotFoundException {
+    public void removeQuestion(final Long id) {
         notNull(id, "id cannot be null");
 
         Question question = em.find(Question.class, id);

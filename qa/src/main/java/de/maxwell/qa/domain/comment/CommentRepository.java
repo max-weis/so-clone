@@ -55,7 +55,7 @@ public class CommentRepository {
      * @param id of the comment
      * @return comment
      */
-    public Comment findById(final Long id) throws CommentNotFoundException {
+    public Comment findById(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Find comment with id {}", id);
@@ -143,7 +143,7 @@ public class CommentRepository {
      * @return
      */
     @Transactional
-    public Comment createComment(final String userID, final Long questionID, final Long answerID, final String description) throws IllegalArgumentException {
+    public Comment createComment(final String userID, final Long questionID, final Long answerID, final String description) {
         try {
             notNull(userID, "userID cannot be null");
             notNull(description, "description cannot be null");
@@ -186,7 +186,7 @@ public class CommentRepository {
      * @return comment
      */
     @Transactional
-    public Comment updateDescription(final Long id, final String newDescription) throws CommentNotFoundException {
+    public Comment updateDescription(final Long id, final String newDescription) {
         notNull(id, "id cannot be null");
         notNull(newDescription, "new description cannot be null");
         notEmpty(newDescription, "new description cannot be empty");
@@ -214,7 +214,7 @@ public class CommentRepository {
      * @return new rating
      */
     @Transactional
-    public Long updateRating(final Long id, final Integer rating) throws CommentNotFoundException, IllegalArgumentException {
+    public Long updateRating(final Long id, final Integer rating) {
         notNull(id, "id cannot be null");
         notNull(rating, "rating cannot be null");
 
@@ -243,7 +243,7 @@ public class CommentRepository {
      * @param id of the comment
      */
     @Transactional
-    public void removeComment(final Long id) throws CommentNotFoundException {
+    public void removeComment(final Long id) {
         notNull(id, "id cannot be null");
 
         Comment comment = em.find(Comment.class, id);

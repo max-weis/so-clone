@@ -39,7 +39,7 @@ public class AnswerService {
     @Inject
     AnswerRepository answerRepository;
 
-    public Answer findAnswer(final Long id) throws AnswerNotFoundException, NullPointerException {
+    public Answer findAnswer(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Find answer by id: {}", id);
@@ -47,7 +47,7 @@ public class AnswerService {
         return this.answerRepository.findById(id);
     }
 
-    public List<Answer> findAnswers(final Integer limit, final Integer offset) throws NullPointerException {
+    public List<Answer> findAnswers(final Integer limit, final Integer offset) {
         notNull(limit, "limit cannot be null");
         notNull(offset, "offset cannot be null");
 
@@ -56,7 +56,7 @@ public class AnswerService {
         return this.answerRepository.listAllPaginated(limit, offset);
     }
 
-    public List<Answer> findAnswersByQuestionID(final Long questionID, final Integer limit, final Integer offset) throws NullPointerException {
+    public List<Answer> findAnswersByQuestionID(final Long questionID, final Integer limit, final Integer offset) {
         notNull(questionID, "questionID cannot be null");
         notNull(limit, "limit cannot be null");
         notNull(offset, "offset cannot be null");
@@ -66,7 +66,7 @@ public class AnswerService {
         return this.answerRepository.listAllPaginatedByQuestionID(questionID, limit, offset);
     }
 
-    public Answer createAnswer(final String userID, final Long questionID, final String description) throws IllegalArgumentException, NullPointerException {
+    public Answer createAnswer(final String userID, final Long questionID, final String description) {
         notNull(userID, "userID cannot be null");
         notNull(questionID, "questionID cannot be null");
         notNull(description, "description cannot be null");
@@ -78,7 +78,7 @@ public class AnswerService {
         return this.answerRepository.createAnswer(userID, questionID, description);
     }
 
-    public Answer updateDescription(final Long id, final String newDescription) throws AnswerNotFoundException, NullPointerException {
+    public Answer updateDescription(final Long id, final String newDescription) {
         notNull(id, "id cannot be null");
         notNull(newDescription, "newDescription cannot be null");
 
@@ -89,7 +89,7 @@ public class AnswerService {
         return this.answerRepository.updateDescription(id, newDescription);
     }
 
-    public Long incrementRating(final Long id) throws AnswerNotFoundException, NullPointerException {
+    public Long incrementRating(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Increment rating of answer with id: {}", id);
@@ -97,7 +97,7 @@ public class AnswerService {
         return this.answerRepository.updateRating(id, 1);
     }
 
-    public Long decrementRating(final Long id) throws AnswerNotFoundException, NullPointerException {
+    public Long decrementRating(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Decrement rating of answer with id: {}", id);
@@ -105,7 +105,7 @@ public class AnswerService {
         return this.answerRepository.updateRating(id, -1);
     }
 
-    public boolean setCorrectAnswer(final Long id) throws AnswerNotFoundException, NullPointerException {
+    public boolean setCorrectAnswer(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Set correct answer of id: {}", id);
@@ -113,7 +113,7 @@ public class AnswerService {
         return this.answerRepository.setCorrectAnswer(id, true);
     }
 
-    public boolean unsetCorrectAnswer(final Long id) throws AnswerNotFoundException, NullPointerException {
+    public boolean unsetCorrectAnswer(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Unset correct answer of id: {}", id);
@@ -121,7 +121,7 @@ public class AnswerService {
         return this.answerRepository.setCorrectAnswer(id, false);
     }
 
-    public Long countNumberOfAnswersOfUser(final String userID) throws NullPointerException, IllegalArgumentException {
+    public Long countNumberOfAnswersOfUser(final String userID) {
         notNull(userID, "userID cannot be null");
         notEmpty(userID, "userID cannot be empty");
 
@@ -130,7 +130,7 @@ public class AnswerService {
         return this.answerRepository.countNumberOfAnswersOfUser(userID);
     }
 
-    public Long countNumberOfAnswersOfQuestion(final Long questionID) throws NullPointerException {
+    public Long countNumberOfAnswersOfQuestion(final Long questionID) {
         notNull(questionID, "questionID cannot be null");
 
         LOG.info("Count number of answers the question with id: {} has", questionID);
@@ -138,7 +138,7 @@ public class AnswerService {
         return this.answerRepository.countNumberOfAnswersOfQuestion(questionID);
     }
 
-    public void removeAnswer(final Long id) throws AnswerNotFoundException {
+    public void removeAnswer(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Remove answer by id: {}", id);

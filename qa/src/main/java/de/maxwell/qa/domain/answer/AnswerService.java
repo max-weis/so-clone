@@ -24,6 +24,7 @@
 
 package de.maxwell.qa.domain.answer;
 
+import de.maxwell.qa.infrastructure.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,7 @@ import java.util.List;
 import static org.apache.commons.lang3.Validate.notEmpty;
 import static org.apache.commons.lang3.Validate.notNull;
 
+@Service
 public class AnswerService {
     private static final Logger LOG = LoggerFactory.getLogger(AnswerService.class);
 

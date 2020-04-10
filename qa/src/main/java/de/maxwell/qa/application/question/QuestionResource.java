@@ -29,6 +29,7 @@ import de.maxwell.qa.domain.question.Question;
 import de.maxwell.qa.domain.question.QuestionNotFoundException;
 import de.maxwell.qa.domain.question.QuestionService;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.metrics.Counter;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
@@ -50,6 +51,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+
+import static de.maxwell.qa.infrastructure.helper.JWTCheck.checkJWT;
 
 @Path("question")
 @Produces(MediaType.APPLICATION_JSON)
@@ -89,7 +92,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("get_question_500")
+            Counter get_question_500 = metricRegistry.counter("get_question_500");
+            get_question_500
                     .inc();
 
             LOG.info("An error occured");
@@ -124,7 +128,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("create_question_500")
+            Counter create_question_500 = metricRegistry.counter("create_question_500");
+            create_question_500
                     .inc();
 
             LOG.info("An error occured");
@@ -149,7 +154,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("list_questions_500")
+            Counter list_questions_500 = metricRegistry.counter("list_questions_500");
+            list_questions_500
                     .inc();
 
             LOG.info("An error occured");
@@ -187,7 +193,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("update_title_500")
+            Counter update_title_500 = metricRegistry.counter("update_title_500");
+            update_title_500
                     .inc();
 
             LOG.info("An error occured");
@@ -225,7 +232,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("update_description_500")
+            Counter update_description_500 = metricRegistry.counter("update_description_500");
+            update_description_500
                     .inc();
 
             LOG.info("An error occured");
@@ -257,7 +265,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("increment_view_500")
+            Counter increment_view_500 = metricRegistry.counter("increment_view_500");
+            increment_view_500
                     .inc();
 
             LOG.info("An error occured");
@@ -289,7 +298,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("upvote_rating_500")
+            Counter upvote_rating_500 = metricRegistry.counter("upvote_rating_500");
+            upvote_rating_500
                     .inc();
 
             LOG.info("An error occured");
@@ -321,7 +331,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("downvote_rating_500")
+            Counter downvote_rating_500 = metricRegistry.counter("downvote_rating_500");
+            downvote_rating_500
                     .inc();
 
             LOG.info("An error occured");
@@ -366,7 +377,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("set_correct_answer_500")
+            Counter set_correct_answer_500 = metricRegistry.counter("set_correct_answer_500");
+            set_correct_answer_500
                     .inc();
 
             LOG.info("An error occured");
@@ -400,7 +412,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("get_count_500")
+            Counter get_count_500 = metricRegistry.counter("get_count_500");
+            get_count_500
                     .inc();
 
             LOG.info("An error occured");
@@ -439,7 +452,8 @@ public class QuestionResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
-            metricRegistry.counter("delete_question_500")
+            Counter delete_question_500 = metricRegistry.counter("delete_question_500");
+            delete_question_500
                     .inc();
 
             LOG.info("An error occured");
@@ -448,19 +462,4 @@ public class QuestionResource {
         }
     }
 
-    /**
-     * Checks if the request has the correct user id
-     *
-     * @param jwt    to check
-     * @param userID supposed user id
-     * @return false if unauthorized
-     */
-    private boolean checkJWT(final JsonWebToken jwt, final String userID) {
-        String sub = jwt.getSubject();
-
-        if (!sub.equals(userID)) {
-            return false;
-        }
-        return true;
-    }
 }

@@ -55,7 +55,7 @@ public class ProfileRepository {
      * @param id of the profile
      * @return profile
      */
-    public Profile findById(final Long id) throws ProfileNotFoundException {
+    public Profile findById(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Find answer with id {}", id);
@@ -107,15 +107,19 @@ public class ProfileRepository {
      * @return
      */
     @Transactional
-    public Profile createProfile(final String userID, String firstName) throws IllegalArgumentException {
+    public Profile createProfile(final String userID, final String firstName, final String lastName) {
         try {
             notNull(userID, "userID cannot be null");
             notNull(firstName, "firstName cannot be null");
+            notNull(lastName, "lastName cannot be null");
+
             notEmpty(firstName, "firstName cannot be empty");
+            notEmpty(lastName, "lastName cannot be empty");
 
             Profile profile = Profile.newBuilder()
                     .withUserID(userID)
                     .withFirstName(firstName)
+                    .withLastName(lastName)
                     .build();
 
             em.persist(profile);
@@ -136,7 +140,7 @@ public class ProfileRepository {
      * @return profile
      */
     @Transactional
-    public Profile updateFirstName(final Long id, final String newFirstName) throws ProfileNotFoundException {
+    public Profile updateFirstName(final Long id, final String newFirstName) {
         notNull(id, "id cannot be null");
         notNull(newFirstName, "new first name cannot be null");
         notEmpty(newFirstName, "new first name  cannot be empty");
@@ -164,7 +168,7 @@ public class ProfileRepository {
      * @return profile
      */
     @Transactional
-    public Profile updateLastName(final Long id, final String newLastName) throws ProfileNotFoundException {
+    public Profile updateLastName(final Long id, final String newLastName) {
         notNull(id, "id cannot be null");
         notNull(newLastName, "new last name cannot be null");
         notEmpty(newLastName, "new last name  cannot be empty");
@@ -192,7 +196,7 @@ public class ProfileRepository {
      * @return profile
      */
     @Transactional
-    public Profile updateDescription(final Long id, final String newDescription) throws ProfileNotFoundException {
+    public Profile updateDescription(final Long id, final String newDescription) {
         notNull(id, "id cannot be null");
         notNull(newDescription, "new description cannot be null");
         notEmpty(newDescription, "new description cannot be empty");
@@ -220,7 +224,7 @@ public class ProfileRepository {
      * @return new reputation
      */
     @Transactional
-    public void updateImage(final Long id, final Byte[] image) throws ProfileNotFoundException {
+    public void updateImage(final Long id, final Byte[] image) {
         notNull(id, "id cannot be null");
         notNull(image, "new image cannot be null");
 
@@ -245,7 +249,7 @@ public class ProfileRepository {
      * @return new reputation
      */
     @Transactional
-    public Long updateReputation(final Long id, final Integer reputation) throws ProfileNotFoundException {
+    public Long updateReputation(final Long id, final Integer reputation) {
         notNull(id, "id cannot be null");
         notNull(reputation, "reputation cannot be null");
 
@@ -271,7 +275,7 @@ public class ProfileRepository {
      * @param id of the profile
      */
     @Transactional
-    public void removeProfile(final Long id) throws ProfileNotFoundException {
+    public void removeProfile(final Long id) {
         notNull(id, "id cannot be null");
 
         Profile profile = em.find(Profile.class, id);

@@ -57,13 +57,13 @@ public class ProfileRepositoryIT {
 
     @BeforeAll
     public void setUp() {
-        profileRepository.createProfile("1", "test");
-        profileRepository.createProfile("2", "test");
-        profileRepository.createProfile("3", "test");
-        profileRepository.createProfile("4", "test");
-        profileRepository.createProfile("5", "test");
-        profileRepository.createProfile("6", "test");
-        profileRepository.createProfile("7", "test");
+        profileRepository.createProfile("1", "test","test");
+        profileRepository.createProfile("2", "test","test");
+        profileRepository.createProfile("3", "test","test");
+        profileRepository.createProfile("4", "test","test");
+        profileRepository.createProfile("5", "test","test");
+        profileRepository.createProfile("6", "test","test");
+        profileRepository.createProfile("7", "test","test");
     }
 
     @Test

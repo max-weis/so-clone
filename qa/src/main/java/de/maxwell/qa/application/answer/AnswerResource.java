@@ -247,4 +247,56 @@ public class AnswerResource {
                     .build();
         }
     }
+
+    @GET
+    @Path("/{id}/correct")
+    @Counted(name = "set_correct_answer_total", description = "set correct answer counter")
+    @Timed(name = "set_correct_answer_timer", description = "Time to set correct answer", unit = MetricUnits.SECONDS)
+    public Response setCorrectAnswer(@PathParam("id") final Long answerID) {
+        try {
+            LOG.info("Set correct answer of id: {}", answerID);
+
+            this.service.setCorrectAnswer(answerID);
+
+            return Response
+                    .ok()
+                    .build();
+        } catch (NullPointerException n) {
+            LOG.info("Wrong input for correct answer");
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
+        } catch (AnswerNotFoundException a) {
+            LOG.info("Could not find answer");
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}/incorrect")
+    @Counted(name = "unset_correct_answer_total", description = "unset correct answer counter")
+    @Timed(name = "unset_correct_answer_timer", description = "Time to unset correct answer", unit = MetricUnits.SECONDS)
+    public Response unsetCorrectAnswer(@PathParam("id") final Long answerID) {
+        try {
+            LOG.info("Set incorrect answer of id: {}", answerID);
+
+            this.service.unsetCorrectAnswer(answerID);
+
+            return Response
+                    .ok()
+                    .build();
+        } catch (NullPointerException n) {
+            LOG.info("Wrong input for incorrect answer");
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
+        } catch (AnswerNotFoundException a) {
+            LOG.info("Could not find answer");
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+    }
 }

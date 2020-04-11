@@ -46,6 +46,12 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
 
+
+  sonarqube:
+    image: sonarqube:lts
+    ports:
+      - 9000:9000
+
 volumes:
   postgres_keycloak_data:
     driver: local

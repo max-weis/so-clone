@@ -44,6 +44,11 @@
         <version.assertj>3.13.0</version.assertj>
         <version.testcontainers>1.13.0</version.testcontainers>
         <quarkus.package.uber-jar>true</quarkus.package.uber-jar>
+
+        <sonar.projectKey>m4xws_so-clone</sonar.projectKey>
+        <sonar.organization>maxwell-github</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.login>30f0ef95f57567fc8db35e8835f5a328c86671ab</sonar.login>
     </properties>
     <dependencies>
         <dependency>

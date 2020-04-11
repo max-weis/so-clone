@@ -144,7 +144,7 @@ public class QuestionResource {
     public Response listQuestionsPaginated(@Size(min = 0, max = 50) @QueryParam("limit") final Integer limit, @Size(min = 0) @QueryParam("offset") final Integer offset) {
         try {
             List<Question> questions = this.service.findQuestions(limit, offset);
-            LOG.info("Found {} questions", limit * offset);
+            LOG.info("Find up to {} questions", limit * (offset + 1));
 
             return Response.ok()
                     .entity(questions)

@@ -59,7 +59,7 @@ public class QuestionService {
         notNull(limit, "limit cannot be null");
         notNull(offset, "offset cannot be null");
 
-        LOG.info("Find {} questions", limit * offset);
+        LOG.info("Find {} questions", limit * (offset + 1));
 
         return this.questionRepository.listAllPaginated(limit, offset);
     }

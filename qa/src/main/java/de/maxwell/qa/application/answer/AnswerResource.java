@@ -154,23 +154,48 @@ public class AnswerResource {
     @Counted(name = "create_answer_total", description = "create one answer counter")
     @Timed(name = "create_answer_timer", description = "Time to create one answer", unit = MetricUnits.SECONDS)
     public Response createAnswer(final AnswerNewDTO baseAnswer) {
-        LOG.info("Create new question");
+        try {
+            LOG.info("Create new answer");
 
-        boolean check = checkJWT(jwt, baseAnswer.getUserID());
-        if (!check) {
-            return Response.status(Response.Status.UNAUTHORIZED)
+            boolean check = checkJWT(jwt, baseAnswer.getUserID());
+            if (!check) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .build();
+            }
+
+            Answer answer = this.service.createAnswer(baseAnswer.getUserID(), baseAnswer.getQuestionID(), baseAnswer.getDescription());
+
+            LOG.info("New answer with ID: {} created", answer.getId());
+
+            return Response
+                    .status(Response.Status.CREATED)
+                    .entity(answer)
+                    .build();
+        } catch (NullPointerException n) {
+            LOG.info("Wrong input for new answer");
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
                     .build();
         }
-
-        Answer answer = this.service.createAnswer(baseAnswer.getUserID(), baseAnswer.getQuestionID(), baseAnswer.getDescription());
-
-        LOG.info("New answer with ID: {} created", answer.getId());
-
-        return Response
-                .status(Response.Status.CREATED)
-                .entity(answer)
-                .build();
     }
 
+    @Counted(name = "update_answer_description_total", description = "update description of one answer counter")
+    @Timed(name = "update_answer_description_timer", description = "Time to update description of  one answer", unit = MetricUnits.SECONDS)
+    public Response updateDescription(final AnswerUpdateDescriptionDTO updateDescriptionDTO) {
+        try {
+            LOG.info("Update description of answer with id: {}", updateDescriptionDTO.getId());
 
+            Answer answer = this.service.updateDescription(updateDescriptionDTO.getId(), updateDescriptionDTO.getNewDescription());
+
+            return Response
+                    .status(Response.Status.CREATED)
+                    .entity(answer)
+                    .build();
+        } catch (IllegalArgumentException | NullPointerException n) {
+            LOG.info("Wrong input for new answer");
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
+        }
+    }
 }

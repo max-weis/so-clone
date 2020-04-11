@@ -24,7 +24,7 @@
 
 package de.maxwell.qa.infrastructure.helper;
 
-import org.eclipse.microprofile.jwt.JsonWebToken;
+        import org.eclipse.microprofile.jwt.JsonWebToken;
 
 public class JWTCheck {
     /**
@@ -35,11 +35,7 @@ public class JWTCheck {
      * @return false if unauthorized
      */
     public static boolean checkJWT(final JsonWebToken jwt, final String userID) {
-        String sub = jwt.getSubject();
-
-        if (!sub.equals(userID)) {
-            return false;
-        }
-        return true;
+        return jwt.getSubject()
+                .equals(userID);
     }
 }

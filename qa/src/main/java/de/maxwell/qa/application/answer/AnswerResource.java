@@ -204,6 +204,8 @@ public class AnswerResource {
 
     @GET
     @Path("/{id}/increment")
+    @Counted(name = "increment_rating_total", description = "increment rating of an answer counter")
+    @Timed(name = "increment_rating_timer", description = "Time to increment rating of an answer", unit = MetricUnits.SECONDS)
     public Response incrementRating(@PathParam("id") final Long answerID) {
         try {
             LOG.info("Increment rating of answer with id: {}", answerID);
@@ -225,6 +227,8 @@ public class AnswerResource {
 
     @DELETE
     @Path("/{id}/decrement")
+    @Counted(name = "decrement_rating_total", description = "decrement rating of an answer counter")
+    @Timed(name = "decrement_rating_timer", description = "Time to decrement rating of an answer", unit = MetricUnits.SECONDS)
     public Response decrementRating(@PathParam("id") final Long answerID) {
         try {
             LOG.info("Decrement rating of answer with id: {}", answerID);

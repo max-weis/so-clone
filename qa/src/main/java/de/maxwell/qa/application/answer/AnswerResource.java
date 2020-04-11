@@ -39,8 +39,10 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.validation.constraints.Size;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -179,6 +181,7 @@ public class AnswerResource {
         }
     }
 
+    @PUT
     @Counted(name = "update_answer_description_total", description = "update description of one answer counter")
     @Timed(name = "update_answer_description_timer", description = "Time to update description of  one answer", unit = MetricUnits.SECONDS)
     public Response updateDescription(final AnswerUpdateDescriptionDTO updateDescriptionDTO) {
@@ -188,11 +191,53 @@ public class AnswerResource {
             Answer answer = this.service.updateDescription(updateDescriptionDTO.getId(), updateDescriptionDTO.getNewDescription());
 
             return Response
-                    .status(Response.Status.CREATED)
+                    .status(Response.Status.OK)
                     .entity(answer)
                     .build();
         } catch (IllegalArgumentException | NullPointerException n) {
             LOG.info("Wrong input for new answer");
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/increment")
+    public Response incrementRating(@PathParam("id") final Long answerID) {
+        try {
+            LOG.info("Increment rating of answer with id: {}", answerID);
+
+            Long rating = this.service.incrementRating(answerID);
+
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(rating)
+                    .build();
+
+        } catch (NullPointerException n) {
+            LOG.info("Wrong input for increment rating");
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}/decrement")
+    public Response decrementRating(@PathParam("id") final Long answerID) {
+        try {
+            LOG.info("Decrement rating of answer with id: {}", answerID);
+
+            Long rating = this.service.decrementRating(answerID);
+
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(rating)
+                    .build();
+
+        } catch (NullPointerException n) {
+            LOG.info("Wrong input for increment rating");
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .build();

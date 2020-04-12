@@ -49,7 +49,7 @@ public class CommentService {
         return this.commentRepository.findById(id);
     }
 
-    public List<Comment> listCommentsByQuestionID(final Long questionID, final Integer limit, final Integer offset) {
+    public List<Comment> listCommentsPaginatedByQuestionID(final Long questionID, final Integer limit, final Integer offset) {
         notNull(questionID, "questionID cannot be null");
         notNull(limit, "limit cannot be null");
         notNull(offset, "offset cannot be null");
@@ -59,7 +59,15 @@ public class CommentService {
         return this.commentRepository.listAllPaginatedByQuestionID(questionID, limit, offset);
     }
 
-    public List<Comment> listCommentsByAnswerID(final Long answerID, final Integer limit, final Integer offset) {
+    public List<Comment> listCommentsByQuestionID(final Long questionID) {
+        notNull(questionID, "questionID cannot be null");
+
+        LOG.info("Find comments by question id: {}", questionID);
+
+        return this.commentRepository.listAllByQuestionID(questionID);
+    }
+
+    public List<Comment> listCommentsPaginatedByAnswerID(final Long answerID, final Integer limit, final Integer offset) {
         notNull(answerID, "answerID cannot be null");
         notNull(limit, "limit cannot be null");
         notNull(offset, "offset cannot be null");
@@ -67,6 +75,14 @@ public class CommentService {
         LOG.info("Find {} comments by answer id", limit * offset);
 
         return this.commentRepository.listAllPaginatedByAnswerID(answerID, limit, offset);
+    }
+
+    public List<Comment> listCommentsByAnswerID(final Long answerID) {
+        notNull(answerID, "answerID cannot be null");
+
+        LOG.info("Find comments by answer id: {}", answerID);
+
+        return this.commentRepository.listAllByAnswerID(answerID);
     }
 
     public Comment createComment(final String userID, final Long questionID, final Long answerID, final String description) {

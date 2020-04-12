@@ -24,6 +24,8 @@
 
 package de.maxwell.qa.domain.answer;
 
+import de.maxwell.qa.domain.comment.Comment;
+import de.maxwell.qa.domain.comment.CommentService;
 import de.maxwell.qa.infrastructure.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,9 @@ public class AnswerService {
 
     @Inject
     AnswerRepository answerRepository;
+
+    @Inject
+    CommentService commentService;
 
     public Answer findAnswer(final Long id) {
         notNull(id, "id cannot be null");
@@ -71,7 +76,7 @@ public class AnswerService {
     public List<Answer> findAllAnswersOfQuestion(final Long questionID) {
         notNull(questionID, "questionID cannot be null");
 
-        LOG.info("Find all answers of question with id: {}",questionID);
+        LOG.info("Find all answers of question with id: {}", questionID);
 
         return this.answerRepository.listAllAnswers(questionID);
     }
@@ -154,5 +159,12 @@ public class AnswerService {
         LOG.info("Remove answer by id: {}", id);
 
         this.answerRepository.removeAnswer(id);
+
+        this.commentService.listCommentsByAnswerID(id)
+                .forEach(this::removeComment);
+    }
+
+    private void removeComment(Comment comment) {
+        this.commentService.removeComment(comment.getId());
     }
 }

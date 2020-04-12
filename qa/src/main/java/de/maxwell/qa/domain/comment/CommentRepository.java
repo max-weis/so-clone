@@ -103,6 +103,32 @@ public class CommentRepository {
     }
 
     /**
+     * Find comments by question id
+     *
+     * @return list of comments
+     */
+    public List<Comment> listAllByQuestionID(final Long questionID) {
+        notNull(questionID, "questionID cannot be null");
+
+        LOG.info("Find comments by question id: {}", questionID);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Comment> cq = cb.createQuery(Comment.class);
+
+        Root<Comment> root = cq.from(Comment.class);
+        cq.select(root);
+
+        cq.where(cb.equal(root.get("questionID"), questionID));
+
+        List<Comment> comments = em.createQuery(cq)
+                .getResultList();
+
+        LOG.info("Found {} comments", comments.size());
+
+        return comments;
+    }
+
+    /**
      * Find paginated comments
      *
      * @param limit  max number of comment per page
@@ -129,6 +155,32 @@ public class CommentRepository {
         query.setMaxResults(limit);
 
         List<Comment> comments = query.getResultList();
+
+        LOG.info("Found {} comments", comments.size());
+
+        return comments;
+    }
+
+    /**
+     * Find comments by answer id
+     *
+     * @return list of comments
+     */
+    public List<Comment> listAllByAnswerID(final Long answerID) {
+        notNull(answerID, "answerID cannot be null");
+
+        LOG.info("Find comments by answer id: {}", answerID);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Comment> cq = cb.createQuery(Comment.class);
+
+        Root<Comment> root = cq.from(Comment.class);
+        cq.select(root);
+
+        cq.where(cb.equal(root.get("answerID"), answerID));
+
+        List<Comment> comments = em.createQuery(cq)
+                .getResultList();
 
         LOG.info("Found {} comments", comments.size());
 

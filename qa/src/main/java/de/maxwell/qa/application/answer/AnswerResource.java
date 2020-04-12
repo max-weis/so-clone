@@ -30,9 +30,6 @@ import de.maxwell.qa.domain.answer.AnswerService;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.metrics.Counter;
 import org.eclipse.microprofile.metrics.MetricRegistry;
-import org.eclipse.microprofile.metrics.MetricUnits;
-import org.eclipse.microprofile.metrics.annotation.Counted;
-import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,8 +67,6 @@ public class AnswerResource {
 
     @GET
     @Path("/{id}")
-    @Counted(name = "get_answer_total", description = "get one answer counter")
-    @Timed(name = "get_answer_timer", description = "Time to get one answer", unit = MetricUnits.SECONDS)
     public Response getAnswer(@PathParam("id") final Long answerID) {
         try {
             LOG.info("Find answer with ID: {}", answerID);
@@ -101,8 +96,6 @@ public class AnswerResource {
     }
 
     @GET
-    @Counted(name = "list_answers_by_question_id_total", description = "list answers by question counter")
-    @Timed(name = "list_answers_by_question_id_timer", description = "Time to list answers by question", unit = MetricUnits.SECONDS)
     public Response listQuestionsPaginated(@Size(min = 0) @QueryParam("questionID") final Long questionID, @Size(min = 0, max = 50) @QueryParam("limit") final Integer limit, @Size(min = 0) @QueryParam("offset") final Integer offset) {
         try {
             List<Answer> answers = this.service.findAnswersByQuestionID(questionID, limit, offset);
@@ -127,8 +120,6 @@ public class AnswerResource {
     }
 
     @GET
-    @Counted(name = "list_answers_total", description = "list answers counter")
-    @Timed(name = "list_answers_timer", description = "Time to list answers ", unit = MetricUnits.SECONDS)
     public Response listQuestionsPaginated(@Size(min = 0, max = 50) @QueryParam("limit") final Integer limit, @Size(min = 0) @QueryParam("offset") final Integer offset) {
         try {
             List<Answer> answers = this.service.findAnswers(limit, offset);
@@ -153,8 +144,6 @@ public class AnswerResource {
     }
 
     @POST
-    @Counted(name = "create_answer_total", description = "create one answer counter")
-    @Timed(name = "create_answer_timer", description = "Time to create one answer", unit = MetricUnits.SECONDS)
     public Response createAnswer(final AnswerNewDTO baseAnswer) {
         try {
             LOG.info("Create new answer");
@@ -182,8 +171,6 @@ public class AnswerResource {
     }
 
     @PUT
-    @Counted(name = "update_answer_description_total", description = "update description of one answer counter")
-    @Timed(name = "update_answer_description_timer", description = "Time to update description of  one answer", unit = MetricUnits.SECONDS)
     public Response updateDescription(final AnswerUpdateDescriptionDTO updateDescriptionDTO) {
         try {
             LOG.info("Update description of answer with id: {}", updateDescriptionDTO.getId());
@@ -204,8 +191,6 @@ public class AnswerResource {
 
     @GET
     @Path("/{id}/increment")
-    @Counted(name = "increment_rating_total", description = "increment rating of an answer counter")
-    @Timed(name = "increment_rating_timer", description = "Time to increment rating of an answer", unit = MetricUnits.SECONDS)
     public Response incrementRating(@PathParam("id") final Long answerID) {
         try {
             LOG.info("Increment rating of answer with id: {}", answerID);
@@ -227,8 +212,6 @@ public class AnswerResource {
 
     @DELETE
     @Path("/{id}/decrement")
-    @Counted(name = "decrement_rating_total", description = "decrement rating of an answer counter")
-    @Timed(name = "decrement_rating_timer", description = "Time to decrement rating of an answer", unit = MetricUnits.SECONDS)
     public Response decrementRating(@PathParam("id") final Long answerID) {
         try {
             LOG.info("Decrement rating of answer with id: {}", answerID);
@@ -250,8 +233,6 @@ public class AnswerResource {
 
     @GET
     @Path("/{id}/correct")
-    @Counted(name = "set_correct_answer_total", description = "set correct answer counter")
-    @Timed(name = "set_correct_answer_timer", description = "Time to set correct answer", unit = MetricUnits.SECONDS)
     public Response setCorrectAnswer(@PathParam("id") final Long answerID) {
         try {
             LOG.info("Set correct answer of id: {}", answerID);
@@ -276,8 +257,6 @@ public class AnswerResource {
 
     @DELETE
     @Path("/{id}/incorrect")
-    @Counted(name = "unset_correct_answer_total", description = "unset correct answer counter")
-    @Timed(name = "unset_correct_answer_timer", description = "Time to unset correct answer", unit = MetricUnits.SECONDS)
     public Response unsetCorrectAnswer(@PathParam("id") final Long answerID) {
         try {
             LOG.info("Set incorrect answer of id: {}", answerID);
@@ -302,8 +281,6 @@ public class AnswerResource {
 
     @GET
     @Path("/{id}/user")
-    @Counted(name = "number_of_answers_from_user_total", description = "count number of answers of a user counter")
-    @Timed(name = "number_of_answers_from_user_timer", description = "Time to count number of answers of a user", unit = MetricUnits.SECONDS)
     public Response countNumberOfAnswersOfUser(@PathParam("id") final String userID) {
         try {
             LOG.info("count number of answers from user with id: {}", userID);
@@ -329,8 +306,6 @@ public class AnswerResource {
 
     @GET
     @Path("/{id}/question")
-    @Counted(name = "number_of_answers_from_question_total", description = "count number of answers of a question counter")
-    @Timed(name = "number_of_answers_from_question_timer", description = "Time to count number of answers of a question", unit = MetricUnits.SECONDS)
     public Response countNumberOfAnswersOfQuestion(@PathParam("id") final Long questionID) {
         try {
             LOG.info("count number of answers from question with id: {}", questionID);
@@ -356,8 +331,6 @@ public class AnswerResource {
 
     @DELETE
     @Path("/{id}")
-    @Counted(name = "remove_answer_total", description = "remove answer counter")
-    @Timed(name = "remove_answer_timer", description = "Time to remove answer", unit = MetricUnits.SECONDS)
     public Response removeAnswer(@PathParam("id") final Long id) {
         try {
             LOG.info("cRemove answer with id: {}", id);

@@ -31,9 +31,6 @@ import de.maxwell.qa.domain.question.QuestionService;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.metrics.Counter;
 import org.eclipse.microprofile.metrics.MetricRegistry;
-import org.eclipse.microprofile.metrics.MetricUnits;
-import org.eclipse.microprofile.metrics.annotation.Counted;
-import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,8 +69,6 @@ public class QuestionResource {
 
     @GET
     @Path("/{id}")
-    @Counted(name = "get_question_total", description = "get one question counter")
-    @Timed(name = "get_question_timer", description = "Time to get one question", unit = MetricUnits.SECONDS)
     public Response getQuestion(@PathParam("id") final Long questionId) {
         try {
             LOG.info("Find question with ID: {}", questionId);
@@ -103,8 +98,6 @@ public class QuestionResource {
     }
 
     @POST
-    @Counted(name = "create_question_total", description = "create one question counter")
-    @Timed(name = "create_question_timer", description = "Time to create one question", unit = MetricUnits.SECONDS)
     public Response createQuestion(final QuestionNewDTO baseQuestion) {
         try {
             LOG.info("Create new question");
@@ -139,8 +132,6 @@ public class QuestionResource {
     }
 
     @GET
-    @Counted(name = "list_questions_total", description = "list questions counter")
-    @Timed(name = "list_questions_timer", description = "Time to list questions", unit = MetricUnits.SECONDS)
     public Response listQuestionsPaginated(@Size(min = 0, max = 50) @QueryParam("limit") final Integer limit, @Size(min = 0) @QueryParam("offset") final Integer offset) {
         try {
             List<Question> questions = this.service.findQuestions(limit, offset);
@@ -165,8 +156,6 @@ public class QuestionResource {
     }
 
     @PUT
-    @Counted(name = "update_title_total", description = "update title counter")
-    @Timed(name = "update_title_timer", description = "Time to update title of a question", unit = MetricUnits.SECONDS)
     public Response updateTitle(final QuestionUpdateTitleDTO newQuestion) {
         try {
             LOG.info("Update title of the question id {}", newQuestion.getId());
@@ -204,8 +193,6 @@ public class QuestionResource {
     }
 
     @PUT
-    @Counted(name = "update_description_total", description = "update description counter")
-    @Timed(name = "update_description_timer", description = "Time to update description of a question", unit = MetricUnits.SECONDS)
     public Response updateDescription(final QuestionUpdateDescriptionDTO newQuestion) {
         try {
             LOG.info("Update description of the question id {}", newQuestion.getId());
@@ -244,8 +231,6 @@ public class QuestionResource {
 
     @PUT
     @Path("/{id}/view")
-    @Counted(name = "increment_view_total", description = "increment view counter")
-    @Timed(name = "increment_view_timer", description = "Time to increment view of a question", unit = MetricUnits.SECONDS)
     public Response incrementView(@PathParam("id") final Long questionId) {
         try {
             Long view = this.service.incrementView(questionId);
@@ -277,8 +262,6 @@ public class QuestionResource {
 
     @PUT
     @Path("/{id}/rating")
-    @Counted(name = "upvote_rating_total", description = "upvote rating counter")
-    @Timed(name = "upvote_rating_timer", description = "Time to upvote the rating of a question", unit = MetricUnits.SECONDS)
     public Response upvoteRating(@PathParam("id") final Long questionId) {
         try {
             Long view = this.service.upvoteRating(questionId);
@@ -310,8 +293,6 @@ public class QuestionResource {
 
     @DELETE
     @Path("/{id}/rating")
-    @Counted(name = "downvote_rating_total", description = "downvote rating counter")
-    @Timed(name = "downvote_rating_timer", description = "Time to downvote the rating of a question", unit = MetricUnits.SECONDS)
     public Response downvoteRating(@PathParam("id") final Long questionId) {
         try {
             Long view = this.service.downvoteRating(questionId);
@@ -343,8 +324,6 @@ public class QuestionResource {
 
     @GET
     @Path("/{id}/answer/{answerId}")
-    @Counted(name = "set_correct_answer_total", description = "set correct answer counter")
-    @Timed(name = "set_correct_answer_timer", description = "Time to set correct answer of a question", unit = MetricUnits.SECONDS)
     public Response setCorrectAnswer(@PathParam("id") final Long questionId, @PathParam("answerId") final Long answerId) {
         try {
             Question question = this.service.findQuestion(questionId);
@@ -389,8 +368,6 @@ public class QuestionResource {
 
     @GET
     @Path("/count")
-    @Counted(name = "get_count_total", description = "get count counter")
-    @Timed(name = "get_count_timer", description = "Time to get count of a question", unit = MetricUnits.SECONDS)
     public Response getCount(@QueryParam("id") final String userID) {
         try {
 
@@ -424,8 +401,6 @@ public class QuestionResource {
 
     @DELETE
     @Path("/{id}")
-    @Counted(name = "delete_question_total", description = "delete question counter")
-    @Timed(name = "delete_question_timer", description = "Time to delete a question", unit = MetricUnits.SECONDS)
     public Response deleteQuestion(@PathParam("id") final Long questionId) {
         try {
             Question question = this.service.findQuestion(questionId);

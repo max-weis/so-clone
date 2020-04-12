@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.validation.constraints.Size;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -111,7 +110,7 @@ public class QuestionResource {
     }
 
     @GET
-    public Response listQuestionsPaginated(@Size(min = 0, max = 50) @QueryParam("limit") final Integer limit, @Size(min = 0) @QueryParam("offset") final Integer offset) {
+    public Response listQuestionsPaginated(@QueryParam("limit") final Integer limit, @QueryParam("offset") final Integer offset) {
         try {
             List<Question> questions = this.service.findQuestions(limit, offset);
             LOG.info("Find up to {} questions", limit * (offset + 1));

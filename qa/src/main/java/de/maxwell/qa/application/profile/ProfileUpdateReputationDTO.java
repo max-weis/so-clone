@@ -29,7 +29,7 @@ public class ProfileUpdateReputationDTO {
 
     private String userID;
 
-    private Long reputation;
+    private Integer reputation;
 
     public ProfileUpdateReputationDTO() {
     }
@@ -50,11 +50,11 @@ public class ProfileUpdateReputationDTO {
         this.userID = userID;
     }
 
-    public Long getReputation() {
+    public Integer getReputation() {
         return reputation;
     }
 
-    public void setReputation(final Long reputation) {
+    public void setReputation(final Integer reputation) {
         this.reputation = reputation;
     }
 }

@@ -299,4 +299,84 @@ public class AnswerResource {
                     .build();
         }
     }
+
+    @GET
+    @Path("/{id}/user")
+    @Counted(name = "number_of_answers_from_user_total", description = "count number of answers of a user counter")
+    @Timed(name = "number_of_answers_from_user_timer", description = "Time to count number of answers of a user", unit = MetricUnits.SECONDS)
+    public Response countNumberOfAnswersOfUser(@PathParam("id") final String userID) {
+        try {
+            LOG.info("count number of answers from user with id: {}", userID);
+
+            Long count = this.service.countNumberOfAnswersOfUser(userID);
+
+            return Response
+                    .ok()
+                    .entity(count)
+                    .build();
+        } catch (NullPointerException n) {
+            LOG.info("Wrong input for count answers");
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
+        } catch (AnswerNotFoundException a) {
+            LOG.info("Could not find answer");
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/question")
+    @Counted(name = "number_of_answers_from_question_total", description = "count number of answers of a question counter")
+    @Timed(name = "number_of_answers_from_question_timer", description = "Time to count number of answers of a question", unit = MetricUnits.SECONDS)
+    public Response countNumberOfAnswersOfQuestion(@PathParam("id") final Long questionID) {
+        try {
+            LOG.info("count number of answers from question with id: {}", questionID);
+
+            Long count = this.service.countNumberOfAnswersOfQuestion(questionID);
+
+            return Response
+                    .ok()
+                    .entity(count)
+                    .build();
+        } catch (NullPointerException n) {
+            LOG.info("Wrong input for count answers");
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
+        } catch (AnswerNotFoundException a) {
+            LOG.info("Could not find answer");
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Counted(name = "remove_answer_total", description = "remove answer counter")
+    @Timed(name = "remove_answer_timer", description = "Time to remove answer", unit = MetricUnits.SECONDS)
+    public Response removeAnswer(@PathParam("id") final Long id) {
+        try {
+            LOG.info("cRemove answer with id: {}", id);
+
+            this.service.removeAnswer(id);
+
+            return Response
+                    .ok()
+                    .build();
+        } catch (NullPointerException n) {
+            LOG.info("Wrong input for count answers");
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
+        } catch (AnswerNotFoundException a) {
+            LOG.info("Could not find answer");
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+    }
 }

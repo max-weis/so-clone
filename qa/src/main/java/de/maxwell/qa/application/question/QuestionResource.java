@@ -29,8 +29,6 @@ import de.maxwell.qa.domain.question.Question;
 import de.maxwell.qa.domain.question.QuestionNotFoundException;
 import de.maxwell.qa.domain.question.QuestionService;
 import org.eclipse.microprofile.jwt.JsonWebToken;
-import org.eclipse.microprofile.metrics.Counter;
-import org.eclipse.microprofile.metrics.MetricRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,9 +57,6 @@ public class QuestionResource {
     private static final Logger LOG = LoggerFactory.getLogger(QuestionResource.class);
 
     @Inject
-    MetricRegistry metricRegistry;
-
-    @Inject
     QuestionService service;
 
     @Inject
@@ -85,14 +80,6 @@ public class QuestionResource {
         } catch (NullPointerException n) {
             LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
-                    .build();
-        } catch (Exception e) {
-            Counter get_question_500 = metricRegistry.counter("get_question_500");
-            get_question_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .build();
         }
     }
@@ -120,14 +107,6 @@ public class QuestionResource {
             LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
-        } catch (Exception e) {
-            Counter create_question_500 = metricRegistry.counter("create_question_500");
-            create_question_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .build();
         }
     }
 
@@ -143,14 +122,6 @@ public class QuestionResource {
         } catch (NullPointerException n) {
             LOG.info("Argument was not correct");
             return Response.status(Response.Status.BAD_REQUEST)
-                    .build();
-        } catch (Exception e) {
-            Counter list_questions_500 = metricRegistry.counter("list_questions_500");
-            list_questions_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .build();
         }
     }
@@ -181,14 +152,6 @@ public class QuestionResource {
             LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
-        } catch (Exception e) {
-            Counter update_title_500 = metricRegistry.counter("update_title_500");
-            update_title_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .build();
         }
     }
 
@@ -218,14 +181,6 @@ public class QuestionResource {
             LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
-        } catch (Exception e) {
-            Counter update_description_500 = metricRegistry.counter("update_description_500");
-            update_description_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .build();
         }
     }
 
@@ -248,14 +203,6 @@ public class QuestionResource {
         } catch (NullPointerException n) {
             LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
-                    .build();
-        } catch (Exception e) {
-            Counter increment_view_500 = metricRegistry.counter("increment_view_500");
-            increment_view_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .build();
         }
     }
@@ -280,14 +227,6 @@ public class QuestionResource {
             LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
-        } catch (Exception e) {
-            Counter upvote_rating_500 = metricRegistry.counter("upvote_rating_500");
-            upvote_rating_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .build();
         }
     }
 
@@ -310,14 +249,6 @@ public class QuestionResource {
         } catch (NullPointerException n) {
             LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
-                    .build();
-        } catch (Exception e) {
-            Counter downvote_rating_500 = metricRegistry.counter("downvote_rating_500");
-            downvote_rating_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .build();
         }
     }
@@ -355,14 +286,6 @@ public class QuestionResource {
             LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
-        } catch (Exception e) {
-            Counter set_correct_answer_500 = metricRegistry.counter("set_correct_answer_500");
-            set_correct_answer_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .build();
         }
     }
 
@@ -387,14 +310,6 @@ public class QuestionResource {
         } catch (NullPointerException n) {
             LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
-                    .build();
-        } catch (Exception e) {
-            Counter get_count_500 = metricRegistry.counter("get_count_500");
-            get_count_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .build();
         }
     }
@@ -423,14 +338,6 @@ public class QuestionResource {
         } catch (NullPointerException n) {
             LOG.info("Arguments have errors {}", n.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
-                    .build();
-        } catch (Exception e) {
-            Counter delete_question_500 = metricRegistry.counter("delete_question_500");
-            delete_question_500
-                    .inc();
-
-            LOG.info("An error occured");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .build();
         }
     }

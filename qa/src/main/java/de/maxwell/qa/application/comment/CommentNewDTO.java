@@ -22,14 +22,60 @@
  * SOFTWARE.
  */
 
-package de.maxwell.qa.application;
+package de.maxwell.qa.application.comment;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+public class CommentNewDTO {
 
-/**
- *
- */
-@ApplicationPath("")
-public class QaRestApplication extends Application {
+    private String userID;
+
+    private Long questionID;
+
+    private Long answerID;
+
+    private String description;
+
+    private Long rating;
+
+    public CommentNewDTO() {
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(final String userID) {
+        this.userID = userID;
+    }
+
+    public Long getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(final Long questionID) {
+        this.questionID = questionID;
+    }
+
+    public Long getAnswerID() {
+        return answerID;
+    }
+
+    public void setAnswerID(final Long answerID) {
+        this.answerID = answerID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public Long getRating() {
+        return rating;
+    }
+
+    public void setRating(final Long rating) {
+        this.rating = rating;
+    }
 }

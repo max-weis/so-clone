@@ -428,8 +428,6 @@ public class QuestionResource {
     @Timed(name = "delete_question_timer", description = "Time to delete a question", unit = MetricUnits.SECONDS)
     public Response deleteQuestion(@PathParam("id") final Long questionId) {
         try {
-            String sub = jwt.getSubject();
-
             Question question = this.service.findQuestion(questionId);
 
             boolean check = checkJWT(jwt, question.getUserID());

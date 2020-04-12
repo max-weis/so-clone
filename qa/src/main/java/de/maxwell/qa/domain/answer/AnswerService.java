@@ -68,6 +68,14 @@ public class AnswerService {
         return this.answerRepository.listAllPaginatedByQuestionID(questionID, limit, offset);
     }
 
+    public List<Answer> findAllAnswersOfQuestion(final Long questionID) {
+        notNull(questionID, "questionID cannot be null");
+
+        LOG.info("Find all answers of question with id: {}",questionID);
+
+        return this.answerRepository.listAllAnswers(questionID);
+    }
+
     public Answer createAnswer(final String userID, final Long questionID, final String description) {
         notNull(userID, "userID cannot be null");
         notNull(questionID, "questionID cannot be null");

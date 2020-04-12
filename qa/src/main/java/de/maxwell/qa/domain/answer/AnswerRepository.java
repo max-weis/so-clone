@@ -132,6 +132,32 @@ public class AnswerRepository {
     }
 
     /**
+     * Find all answers of a question
+     *
+
+     * @return list of answers
+     */
+    public List<Answer> listAllAnswers(final Long questionID) {
+        notNull(questionID, "questionID cannot be null");
+
+        LOG.info("Find all answers of question with id: {}", questionID);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Answer> cq = cb.createQuery(Answer.class);
+
+        Root<Answer> root = cq.from(Answer.class);
+        cq.select(root);
+        cq.where(cb.equal(root.get("questionID"), questionID));
+
+        List<Answer> list = em.createQuery(cq)
+                .getResultList();
+
+        LOG.info("Found {} answers", list.size());
+
+        return list;
+    }
+
+    /**
      * Create a new answer
      *
      * @param userID      user who asked the answer

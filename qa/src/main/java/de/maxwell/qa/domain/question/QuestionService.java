@@ -25,7 +25,7 @@
 package de.maxwell.qa.domain.question;
 
 import de.maxwell.qa.domain.answer.Answer;
-import de.maxwell.qa.domain.answer.AnswerRepository;
+import de.maxwell.qa.domain.answer.AnswerService;
 import de.maxwell.qa.infrastructure.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class QuestionService {
     QuestionRepository questionRepository;
 
     @Inject
-    AnswerRepository answerRepository;
+    AnswerService answerService;
 
     public Question findQuestion(final Long id) {
         notNull(id, "id cannot be null");
@@ -128,7 +128,7 @@ public class QuestionService {
         notNull(questionId, "questionID cannot be null");
         notNull(answerId, "answerId cannot be null");
 
-        Answer answer = this.answerRepository.findById(answerId);
+        Answer answer = this.answerService.findAnswer(answerId);
 
         LOG.info("Set correct answer of question with id: {}", questionId);
         return this.questionRepository.setCorrectAnswer(questionId, answer.getId());
@@ -149,6 +149,13 @@ public class QuestionService {
 
         LOG.info("Delete question with id: {}", id);
 
-        questionRepository.removeQuestion(id);
+        this.questionRepository.removeQuestion(id);
+
+        this.answerService.findAllAnswersOfQuestion(id)
+                .forEach(this::removeAnswer);
+    }
+
+    private void removeAnswer(Answer answer) {
+        this.answerService.removeAnswer(answer.getId());
     }
 }

@@ -24,7 +24,7 @@
 
 package de.maxwell.qa.infrastructure.helper;
 
-        import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 public class JWTCheck {
     /**

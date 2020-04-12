@@ -73,8 +73,8 @@ public class AnswerRepository {
      * Find paginated answers by questionID
      *
      * @param questionID id of the question
-     * @param limit  max number of answer per page
-     * @param offset of the page
+     * @param limit      max number of answer per page
+     * @param offset     of the page
      * @return list of answers
      */
     public List<Answer> listAllPaginatedByQuestionID(final Long questionID, final Integer limit, final Integer offset) {
@@ -134,7 +134,6 @@ public class AnswerRepository {
     /**
      * Find all answers of a question
      *
-
      * @return list of answers
      */
     public List<Answer> listAllAnswers(final Long questionID) {

@@ -41,7 +41,7 @@ public class ProfileService {
     @Inject
     ProfileRepository profileRepository;
 
-    public Profile findComment(final Long id) {
+    public Profile findProfile(final Long id) {
         notNull(id, "id cannot be null");
 
         LOG.info("Find profile by id: {}", id);

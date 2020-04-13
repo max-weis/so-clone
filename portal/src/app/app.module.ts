@@ -8,6 +8,8 @@ import { HomeComponent } from './modules/home/home.component';
 import { SecondNavComponent } from './core/second-nav/second-nav.component';
 import { LoginComponent } from './modules/login/login.component';
 import { RegisterComponent } from './modules/register/register.component';
+import { ListComponent } from './modules/question/list/list.component';
+import { ItemComponent } from './modules/question/item/item.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { RegisterComponent } from './modules/register/register.component';
     HomeComponent,
     SecondNavComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ListComponent,
+    ItemComponent
   ],
   imports: [
     BrowserModule,

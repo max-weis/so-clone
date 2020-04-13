@@ -7,10 +7,10 @@ services:
   #  ports:
   #    - 8080:8080
   #  depends_on:
-  #    - postgresql
+  #    - postgresql-backend
   #    - keycloak
 
-  postgresql:
+  postgresql-backend:
     image: postgres:12-alpine
     ports:
       - 5432:5432
@@ -20,6 +20,7 @@ services:
       POSTGRES_DB: qa
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
 
   keycloak:
     image: jboss/keycloak:9.0.2
@@ -46,11 +47,10 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
 
-
-  sonarqube:
-    image: sonarqube:lts
-    ports:
-      - 9000:9000
+  #sonarqube:
+  #  image: sonarqube:lts
+  #  ports:
+  #    - 9000:9000
 
 volumes:
   postgres_keycloak_data:

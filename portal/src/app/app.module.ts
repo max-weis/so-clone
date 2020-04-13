@@ -11,6 +11,7 @@ import {RegisterComponent} from './modules/register/register.component';
 import {ListComponent} from './modules/question/list/list.component';
 import {ItemComponent} from './modules/question/item/item.component';
 import {HttpClientModule} from '@angular/common/http';
+import { FullComponent } from './modules/question/full/full.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {HttpClientModule} from '@angular/common/http';
     LoginComponent,
     RegisterComponent,
     ListComponent,
-    ItemComponent
+    ItemComponent,
+    FullComponent
   ],
   imports: [
     BrowserModule,

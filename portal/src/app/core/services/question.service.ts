@@ -19,4 +19,10 @@ export class QuestionService {
       retry(3)
     );
   }
+
+  getQuestion(id: number): Observable<Question> {
+    return this.http.get<Question>(`${this.api}/${id}`).pipe(
+      retry(3)
+    );
+  }
 }

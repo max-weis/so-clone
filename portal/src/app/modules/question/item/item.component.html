@@ -1,20 +1,32 @@
 <div class="ui grid segment" (click)="routeToFull()" style="cursor: pointer">
   <div class="ui two wide column">
-    <div class="ui list">
-      <div class="item">{{ question.rating}}</div>
-      <div class="item">Vote</div>
+    <div class="ui mini statistic">
+      <div class="value">
+        {{ question.rating }}
+      </div>
+      <div class="label">
+        Rating
+      </div>
     </div>
   </div>
   <div class="ui two wide column">
-    <div class="ui list">
-      <div class="item">{{ question.numberOfAnswers }}</div>
-      <div class="item">Answers</div>
+    <div class="ui mini statistic">
+      <div class="value">
+        {{ question.numberOfAnswers }}
+      </div>
+      <div class="label">
+        Answers
+      </div>
     </div>
   </div>
   <div class="ui two wide column">
-    <div class="ui list">
-      <div class="item">{{ question.views }}</div>
-      <div class="item">Views</div>
+    <div class="ui mini statistic">
+      <div class="value">
+        {{ question.views }}
+      </div>
+      <div class="label">
+        Views
+      </div>
     </div>
   </div>
   <div class="ui ten wide column">

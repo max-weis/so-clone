@@ -14,6 +14,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { FullComponent } from './modules/question/full/full.component';
 import { AnswerComponent } from './modules/answer/answer.component';
 import { CommentComponent } from './modules/comment/comment.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CommentComponent } from './modules/comment/comment.component';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

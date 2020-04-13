@@ -5,21 +5,21 @@
         Log-in to your account
       </div>
     </h2>
-    <form method="get" class="ui large form">
+    <form #signupForm="ngForm" (ngSubmit)="login(signupForm)" class="ui large form">
       <div class="ui stacked secondary  segment">
         <div class="field">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input type="text" name="email" placeholder="Username">
+            <input type="text" name="username" id="username" placeholder="Username" ngModel>
           </div>
         </div>
         <div class="field">
           <div class="ui left icon input">
             <i class="lock icon"></i>
-            <input type="password" name="password" placeholder="Password">
+            <input type="password" name="password" id="password" placeholder="Password" ngModel>
           </div>
         </div>
-        <div class="ui fluid large teal submit button">Login</div>
+        <button class="ui fluid large teal submit button" type="submit">Login</button>
       </div>
 
       <div class="ui error message"></div>

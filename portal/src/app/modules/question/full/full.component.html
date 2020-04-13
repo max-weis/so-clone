@@ -1,5 +1,25 @@
 <div class="ui container segment" style="margin-top: 1rem;">
+  <!-- Title -->
   <h1>{{ question.title }}</h1>
+
   <div class="ui divider"></div>
+
+  <!-- Header -->
+  <div class="ui grid">
+    <!-- Rating -->
+    <div class="eight wide column">
+      <i class="big thumbs up link icon"></i>
+      <span style="font-size: 1.5rem">{{ question.rating }}</span>
+      <i class="big thumbs down link icon"></i>
+    </div>
+    <!-- Profile -->
+    <div class="eight wide column">
+
+    </div>
+  </div>
+
+  <div class="ui divider"></div>
+  <!-- Description -->
   <p>{{ question.description }}</p>
+
 </div>

@@ -1,19 +1,15 @@
 version: '3.7'
 services:
-  #qa-backend:
-  #  build:
-  #    context: qa
-  #  image: kingmaxwell/qa:1.0.0
-  #  ports:
-  #    - 8080:8080
-  #  depends_on:
-  #    - postgresql-backend
-  #    - keycloak
+  qa-backend:
+    build:
+      context: qa
+    image: kingmaxwell/qa:1.0.0
+    depends_on:
+      - postgresql-backend
+      - keycloak
 
   postgresql-backend:
     image: postgres:12-alpine
-    ports:
-      - 5432:5432
     volumes:
       - postgres_qa_data:/var/lib/postgresql/data
     environment:
@@ -34,7 +30,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
     ports:
-      - 8090:8080
+    - 8080:8080
     depends_on:
       - postgresql-keycloak
 
